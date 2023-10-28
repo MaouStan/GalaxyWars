@@ -68,9 +68,11 @@ public class PausePanel extends JPanel {
         backToMenuBtn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 gp.stop();
-                Frame.getInstance().sound.stop();
-                Frame.getInstance().sound = new SoundManager(bgm1);
-                Frame.getInstance().sound.play(true);
+                if (sound_state) {
+                    Frame.getInstance().sound.stop();
+                    Frame.getInstance().sound = new SoundManager(bgm1);
+                    Frame.getInstance().sound.play(true);
+                }
                 Frame.getInstance().changePanel(new MainPane());
             }
 

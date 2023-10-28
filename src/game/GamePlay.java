@@ -3,6 +3,7 @@ package game;
 import javax.swing.*;
 
 import game.controller.KeyHandler;
+import game.controller.MouseHandler;
 import game.entity.Planet;
 import game.entity.Player;
 import game.gui.GameOverPanel;
@@ -32,6 +33,7 @@ public class GamePlay extends JPanel implements Runnable {
 
     // Controller
     private KeyHandler keyHandler;
+    private MouseHandler mouseHandler;
 
     // GUI
     private PausePanel pausePanel;
@@ -41,25 +43,20 @@ public class GamePlay extends JPanel implements Runnable {
         setSize(getPreferredSize());
         setLayout(null);
 
-        keyHandler = new KeyHandler(this);
-        Frame.getInstance().addKeyListener(keyHandler);
+        if (sound_state) {
+            // remove sound frame
+            Frame.getInstance().sound.stop();
 
-        // remove sound frame
-        Frame.getInstance().sound.stop();
-
-        // new sound
-        Frame.getInstance().sound = new SoundManager(bgm2);
-        Frame.getInstance().sound.play(true);
-
-        init();
+            // new sound
+            Frame.getInstance().sound = new SoundManager(bgm2);
+            Frame.getInstance().sound.play(true);
+        }
     }
 
     private void init() {
         setLayout(null);
         removeAll();
         repaint();
-        keyHandler = new KeyHandler(this);
-        Frame.getInstance().addKeyListener(keyHandler);
 
         gameOver = false;
         isPause = false;
@@ -67,7 +64,13 @@ public class GamePlay extends JPanel implements Runnable {
         score = 0;
         health = MAX_HEALTH;
         planet = new Planet();
-        player = new Player();
+        player = new Player(this);
+
+        keyHandler = new KeyHandler(this);
+        Frame.getInstance().addKeyListener(keyHandler);
+
+        mouseHandler = new MouseHandler(this);
+        Frame.getInstance().addMouseMotionListener(mouseHandler);
     }
 
     public void start() {
@@ -84,6 +87,15 @@ public class GamePlay extends JPanel implements Runnable {
         removeAll();
     }
 
+    public void gameOver() {
+        repaint();
+        gameOverPanel = new GameOverPanel(this);
+        gameOverPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        add(gameOverPanel);
+        Frame.getInstance().removeKeyListener(keyHandler);
+        Frame.getInstance().removeMouseMotionListener(mouseHandler);
+    }
+
     public void restart() {
         stop();
         start();
@@ -95,7 +107,10 @@ public class GamePlay extends JPanel implements Runnable {
 
     private void update() {
         planet.update();
-        player.update();
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     @Override
@@ -195,11 +210,7 @@ public class GamePlay extends JPanel implements Runnable {
             }
         }
         // gameOverPanel
-        repaint();
-        gameOverPanel = new GameOverPanel(this);
-        gameOverPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        add(gameOverPanel);
-        Frame.getInstance().removeKeyListener(keyHandler);
+        gameOver();
     }
 
 }

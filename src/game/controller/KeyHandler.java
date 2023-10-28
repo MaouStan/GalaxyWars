@@ -21,6 +21,7 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            System.out.println("Pause");
             gp.togglePause();
         }
     }

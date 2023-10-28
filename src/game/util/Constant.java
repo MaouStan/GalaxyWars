@@ -8,16 +8,19 @@ import javax.sound.sampled.Clip;
 
 public class Constant {
     // WINDOW GAME SETTINGS
-    public static final int SCREEN_WIDTH = 1360;
-    public static final int SCREEN_HEIGHT = 768;
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1080;
     public static final int FRAME_RATE = 60;
     public static boolean sound_state = true;
 
     // ========== PLANET ========== \\
+    public static String PLANET_IMG = "res/images/planets/planet00.png";
     public static int PLANET_SIZE = 250;
 
     // ========== PLAYER ========== \\
-    public static final int PLAYER_SIZE = 100;
+    public static String PLAYER_IMG = "res/images/player2.png";
+    public static final int PLAYER_WIDTH = 70;
+    public static final int PLAYER_HEIGHT = 79;
     public static final int MAX_HEALTH = 5;
 
     // ========== ASSETS ========== \\
