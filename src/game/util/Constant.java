@@ -40,6 +40,7 @@ public class Constant {
 
     // Sounds
     public static Clip bgm1;
+    public static Clip bgm2;
 
     // Cursor
     private final static String CURSOR_PATH = "res/images/crosshair.png";
@@ -60,6 +61,7 @@ public class Constant {
             BG2 = ImageManager.resizeImage("res/images/bg/bg2.jpg", SCREEN_WIDTH, SCREEN_HEIGHT);
 
             bgm1 = SoundManager.getClip("res/sounds/bgm1.wav");
+            bgm2 = SoundManager.getClip("res/sounds/bgm2.wav");
 
             SOUND_ON = ImageManager.resizeImage("res/images/sound_on.png", 50, 50);
             SOUND_OFF = ImageManager.resizeImage("res/images/sound_off.png", 50, 50);

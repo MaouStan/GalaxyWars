@@ -1,12 +1,16 @@
 package game;
 
 import javax.swing.*;
+
+import game.controller.KeyHandler;
+import game.gui.PausePanel;
+import game.util.SoundManager;
+
 import java.awt.*;
 import static game.util.Constant.*;
 import java.lang.Runnable;
 
 public class GamePlay extends JPanel implements Runnable {
-
     // GAME
     private boolean gameOver;
     private boolean isPause;
@@ -17,8 +21,25 @@ public class GamePlay extends JPanel implements Runnable {
     // PLAYER
     private int health;
 
+    // Controller
+    private KeyHandler keyHandler;
+
+    // GUI
+    private PausePanel pausePanel;
+
     public GamePlay() {
         setLayout(null);
+
+        keyHandler = new KeyHandler(this);
+        Frame.getInstance().addKeyListener(keyHandler);
+
+        // remove sound frame
+        Frame.getInstance().sound.stop();
+
+        // new sound
+        Frame.getInstance().sound = new SoundManager(bgm2);
+        Frame.getInstance().sound.play(true);
+
         init();
     }
 
@@ -36,7 +57,48 @@ public class GamePlay extends JPanel implements Runnable {
         thread.start();
     }
 
+    public void stop() {
+        if (thread != null) {
+            thread = null;
+        }
+    }
+
+    public void togglePause() {
+        isPause = !isPause;
+    }
+
     private void update() {
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(BG2, 0, 0, null);
+        Graphics2D graphics2d = (Graphics2D) g;
+
+        // Time Counter Center Top "00:00:00"
+        graphics2d.setColor(Color.white);
+        graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
+
+        String timeString = String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
+        int width = graphics2d.getFontMetrics().stringWidth(timeString);
+        graphics2d.drawString(timeString, SCREEN_WIDTH / 2 - width / 2, 50);
+
+        // Heart and GrayHeart
+        for (int i = 0; i < MAX_HEALTH; i++) {
+            if (i < health) {
+                g.drawImage(ITEM_HEART, 10 + i * 35, 10, 40, 40, null);
+            } else {
+                g.drawImage(ITEM_GRAY_HEART, 10 + i * 35, 10, 40, 40, null);
+            }
+        }
+
+        // Score
+        graphics2d.setColor(Color.white);
+        graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
+        String scoreString = String.format("%06d", score);
+        int scoreWidth = graphics2d.getFontMetrics().stringWidth(scoreString);
+        graphics2d.drawString(scoreString, SCREEN_WIDTH - scoreWidth - 50, 50);
     }
 
     public void run() {
@@ -70,11 +132,29 @@ public class GamePlay extends JPanel implements Runnable {
                 // Update game if not paused
                 if (!isPause) {
                     update();
+
+                    // remove pause panel if has
+                    if (pausePanel != null) {
+                        remove(pausePanel);
+                        pausePanel = null;
+                    }
+
                     if (currentTimeSecond - oldSecondTime >= 1_000_000_000.0f) {
                         seconds++;
                         oldSecondTime = currentTimeSecond;
                     }
-
+                } else {
+                    // add pause panel
+                    pausePanel = new PausePanel(this);
+                    add(pausePanel);
+                    // pause until unpause
+                    while (isPause) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 // Decrement delta
                 delta--;
@@ -82,34 +162,4 @@ public class GamePlay extends JPanel implements Runnable {
         }
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(BG2, 0, 0, null);
-        Graphics2D graphics2d = (Graphics2D) g;
-
-        // Time Counter Center Top "00:00:00"
-        graphics2d.setColor(Color.white);
-        graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
-
-        String timeString = String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
-        int width = graphics2d.getFontMetrics().stringWidth(timeString);
-        graphics2d.drawString(timeString, SCREEN_WIDTH / 2 - width / 2, 50);
-
-        // Heart and GrayHeart
-        for (int i = 0; i < MAX_HEALTH; i++) {
-            if (i < health) {
-                g.drawImage(ITEM_HEART, 10 + i * 35, 10, 40, 40, null);
-            } else {
-                g.drawImage(ITEM_GRAY_HEART, 10 + i * 35, 10, 40, 40, null);
-            }
-        }
-
-        // Score
-        graphics2d.setColor(Color.white);
-        graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
-        String scoreString = String.format("%06d", score);
-        int scoreWidth = graphics2d.getFontMetrics().stringWidth(scoreString);
-        graphics2d.drawString(scoreString, SCREEN_WIDTH - scoreWidth - 50, 50);
-    }
 }
