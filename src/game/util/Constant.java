@@ -3,7 +3,6 @@ package game.util;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.awt.*;
 import javax.sound.sampled.Clip;
 
@@ -14,6 +13,9 @@ public class Constant {
     public static final int FRAME_RATE = 60;
     public static boolean sound_state = true;
 
+    // ========== PLAYER ========== \\
+    public static final int MAX_HEALTH = 5;
+
     // ========== ASSETS ========== \\
     // GAME LOGO
     public static BufferedImage GAME_LOGO;
@@ -22,6 +24,7 @@ public class Constant {
     public static BufferedImage SOUND_ON;
     public static BufferedImage SOUND_OFF;
     public static BufferedImage BG1;
+    public static BufferedImage BG2;
 
     // Items
     public static BufferedImage ITEM_HEART;
@@ -51,20 +54,21 @@ public class Constant {
             Point hotspot = new Point(25, 25);
             CUSTOM_CURSOR = toolkit.createCustomCursor(image, hotspot, "Crosshair");
 
-            GAME_LOGO = resizeImage("res/images/icon.jpg", 64, 64);
+            GAME_LOGO = ImageManager.resizeImage("res/images/icon.jpg", 64, 64);
 
-            BG1 = resizeImage("res/images/bg/bg1.jpg", SCREEN_WIDTH, SCREEN_HEIGHT);
+            BG1 = ImageManager.resizeImage("res/images/bg/bg1.jpg", SCREEN_WIDTH, SCREEN_HEIGHT);
+            BG2 = ImageManager.resizeImage("res/images/bg/bg2.jpg", SCREEN_WIDTH, SCREEN_HEIGHT);
 
             bgm1 = SoundManager.getClip("res/sounds/bgm1.wav");
 
-            SOUND_ON = resizeImage("res/images/sound_on.png", 50, 50);
-            SOUND_OFF = resizeImage("res/images/sound_off.png", 50, 50);
+            SOUND_ON = ImageManager.resizeImage("res/images/sound_on.png", 50, 50);
+            SOUND_OFF = ImageManager.resizeImage("res/images/sound_off.png", 50, 50);
 
-            ITEM_HEART = resizeImage("res/images/items/heart.png", 50, 50);
-            ITEM_GRAY_HEART = resizeImage("res/images/items/heart_gray.png", 50, 50);
-            ITEM_SHIELD = resizeImage("res/images/items/shield.png", 50, 50);
-            ITEM_FREEZE = resizeImage("res/images/items/freeze.png", 50, 50);
-            ITEM_DAMAGE = resizeImage("res/images/items/damage.png", 50, 50);
+            ITEM_HEART = ImageManager.resizeImage("res/images/items/heart.png", 50, 50);
+            ITEM_GRAY_HEART = ImageManager.resizeImage("res/images/items/heart_gray.png", 50, 50);
+            ITEM_SHIELD = ImageManager.resizeImage("res/images/items/shield.png", 50, 50);
+            ITEM_FREEZE = ImageManager.resizeImage("res/images/items/freeze.png", 50, 50);
+            ITEM_DAMAGE = ImageManager.resizeImage("res/images/items/damage.png", 50, 50);
 
             fRegular = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/Orbitron-Regular.ttf"));
             fSemiBold = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/Orbitron-SemiBold.ttf"));
@@ -72,21 +76,5 @@ public class Constant {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // resizeImage
-    public static BufferedImage resizeImage(String imagePath, int width, int height) {
-        BufferedImage originalImage = null;
-        try {
-            originalImage = ImageIO.read(new File(imagePath));
-            BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = resizedImage.createGraphics();
-            g2d.drawImage(originalImage, 0, 0, width, height, null);
-            g2d.dispose();
-            return resizedImage;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return originalImage;
     }
 }

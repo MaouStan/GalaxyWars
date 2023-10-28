@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import static game.util.Constant.*;
 import game.Frame;
+import game.GamePlay;
 
 public class MainPane extends JPanel {
     public MainPane() {
@@ -96,7 +97,9 @@ public class MainPane extends JPanel {
             }
 
             public void mouseClicked(MouseEvent evt) {
-                System.out.println("START");
+                GamePlay gp = new GamePlay();
+                Frame.getInstance().changePanel(gp);
+                gp.start();
             }
         });
         background.add(startBtn);
