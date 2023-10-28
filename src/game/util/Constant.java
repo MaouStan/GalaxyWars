@@ -13,7 +13,11 @@ public class Constant {
     public static final int FRAME_RATE = 60;
     public static boolean sound_state = true;
 
+    // ========== PLANET ========== \\
+    public static int PLANET_SIZE = 250;
+
     // ========== PLAYER ========== \\
+    public static final int PLAYER_SIZE = 100;
     public static final int MAX_HEALTH = 5;
 
     // ========== ASSETS ========== \\

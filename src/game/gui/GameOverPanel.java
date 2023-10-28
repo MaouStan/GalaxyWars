@@ -3,7 +3,6 @@ package game.gui;
 import game.Frame;
 import game.GamePlay;
 import game.components.OutlineLabel;
-import game.util.ImageManager;
 import game.util.SoundManager;
 
 import java.awt.*;
@@ -11,7 +10,6 @@ import javax.swing.*;
 import static game.util.Constant.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 public class GameOverPanel extends JPanel {
 

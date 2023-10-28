@@ -3,7 +3,6 @@ package game.gui;
 import javax.swing.*;
 
 import game.components.OutlineLabel;
-import game.util.SoundManager;
 import game.components.ItemShows;
 
 import java.awt.*;

@@ -3,6 +3,8 @@ package game;
 import javax.swing.*;
 
 import game.controller.KeyHandler;
+import game.entity.Planet;
+import game.entity.Player;
 import game.gui.GameOverPanel;
 import game.gui.PausePanel;
 import game.util.SoundManager;
@@ -20,7 +22,13 @@ public class GamePlay extends JPanel implements Runnable {
     private int score;
 
     // PLAYER
+
+    // PLANET
     private int health;
+    private Planet planet;
+
+    // Player
+    private Player player;
 
     // Controller
     private KeyHandler keyHandler;
@@ -47,20 +55,22 @@ public class GamePlay extends JPanel implements Runnable {
     }
 
     private void init() {
+        setLayout(null);
+        removeAll();
+        repaint();
+        keyHandler = new KeyHandler(this);
+        Frame.getInstance().addKeyListener(keyHandler);
+
         gameOver = false;
         isPause = false;
         seconds = 0;
         score = 0;
         health = MAX_HEALTH;
+        planet = new Planet();
+        player = new Player();
     }
 
     public void start() {
-        setLayout(null);
-        removeAll();
-        repaint();
-
-        keyHandler = new KeyHandler(this);
-        Frame.getInstance().addKeyListener(keyHandler);
         init();
         thread = new Thread(this);
         thread.start();
@@ -84,6 +94,8 @@ public class GamePlay extends JPanel implements Runnable {
     }
 
     private void update() {
+        planet.update();
+        player.update();
     }
 
     @Override
@@ -115,6 +127,12 @@ public class GamePlay extends JPanel implements Runnable {
         String scoreString = String.format("%06d", score);
         int scoreWidth = graphics2d.getFontMetrics().stringWidth(scoreString);
         graphics2d.drawString(scoreString, SCREEN_WIDTH - scoreWidth - 50, 50);
+
+        // Planet
+        planet.draw(graphics2d);
+
+        // Player
+        player.draw(graphics2d);
     }
 
     public void run() {
