@@ -48,4 +48,9 @@ public class Frame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    public class getInstance {
+
+        public SoundManager sound;
+    }
 }

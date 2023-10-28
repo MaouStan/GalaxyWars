@@ -17,8 +17,10 @@ public class Constant {
     public static final int MAX_HEALTH = 5;
 
     // ========== ASSETS ========== \\
-    // GAME LOGO
+    // GAME
     public static BufferedImage GAME_LOGO;
+    public static BufferedImage reloadImg;
+    public static BufferedImage reloadImg2;
 
     // Images
     public static BufferedImage SOUND_ON;
@@ -56,6 +58,8 @@ public class Constant {
             CUSTOM_CURSOR = toolkit.createCustomCursor(image, hotspot, "Crosshair");
 
             GAME_LOGO = ImageManager.resizeImage("res/images/icon.jpg", 64, 64);
+            reloadImg = ImageManager.resizeImage("res/images/reload.png", 350, 350);
+            reloadImg2 = ImageManager.resizeImage("res/images/reload2.png", 350, 350);
 
             BG1 = ImageManager.resizeImage("res/images/bg/bg1.jpg", SCREEN_WIDTH, SCREEN_HEIGHT);
             BG2 = ImageManager.resizeImage("res/images/bg/bg2.jpg", SCREEN_WIDTH, SCREEN_HEIGHT);

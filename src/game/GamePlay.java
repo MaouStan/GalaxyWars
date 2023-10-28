@@ -3,6 +3,7 @@ package game;
 import javax.swing.*;
 
 import game.controller.KeyHandler;
+import game.gui.GameOverPanel;
 import game.gui.PausePanel;
 import game.util.SoundManager;
 
@@ -26,8 +27,10 @@ public class GamePlay extends JPanel implements Runnable {
 
     // GUI
     private PausePanel pausePanel;
+    private GameOverPanel gameOverPanel;
 
     public GamePlay() {
+        setSize(getPreferredSize());
         setLayout(null);
 
         keyHandler = new KeyHandler(this);
@@ -52,6 +55,12 @@ public class GamePlay extends JPanel implements Runnable {
     }
 
     public void start() {
+        setLayout(null);
+        removeAll();
+        repaint();
+
+        keyHandler = new KeyHandler(this);
+        Frame.getInstance().addKeyListener(keyHandler);
         init();
         thread = new Thread(this);
         thread.start();
@@ -61,6 +70,13 @@ public class GamePlay extends JPanel implements Runnable {
         if (thread != null) {
             thread = null;
         }
+        // remove other components
+        removeAll();
+    }
+
+    public void restart() {
+        stop();
+        start();
     }
 
     public void togglePause() {
@@ -160,6 +176,12 @@ public class GamePlay extends JPanel implements Runnable {
                 delta--;
             }
         }
+        // gameOverPanel
+        repaint();
+        gameOverPanel = new GameOverPanel(this);
+        gameOverPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        add(gameOverPanel);
+        Frame.getInstance().removeKeyListener(keyHandler);
     }
 
 }

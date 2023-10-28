@@ -15,9 +15,7 @@ import game.GamePlay;
 
 public class MainPane extends JPanel {
     public MainPane() {
-
         setLayout(null);
-
         // set Background Image
         JLabel background = new JLabel();
         Image img = new ImageIcon(BG1).getImage().getScaledInstance(SCREEN_WIDTH, SCREEN_HEIGHT, Image.SCALE_SMOOTH);
@@ -32,22 +30,6 @@ public class MainPane extends JPanel {
         soundButton.setIcon(new ImageIcon(sound_state ? SOUND_ON : SOUND_OFF));
         soundButton.setBounds(SCREEN_WIDTH - 100, 25, 50, 50);
         soundButton.addMouseListener(new MouseAdapter() {
-            // public void mouseEntered(MouseEvent evt) {
-            // if (sound_state) {
-            // soundButton.setIcon(new ImageIcon(SOUND_OFF));
-            // } else {
-            // soundButton.setIcon(new ImageIcon(SOUND_ON));
-            // }
-            // }
-
-            // public void mouseExited(MouseEvent evt) {
-            // if (sound_state) {
-            // soundButton.setIcon(new ImageIcon(SOUND_ON));
-            // } else {
-            // soundButton.setIcon(new ImageIcon(SOUND_OFF));
-            // }
-            // }
-
             public void mouseClicked(MouseEvent evt) {
                 if (sound_state) {
                     soundButton.setIcon(new ImageIcon(SOUND_OFF));
