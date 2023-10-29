@@ -16,7 +16,7 @@ public class ItemShows extends JPanel {
             ITEM_SHIELD,
             ITEM_FREEZE,
             ITEM_DAMAGE };
-    private final String[] ITEM_NAME = { "Health +1", "Protect 3 sec", "Freeze 3 sec", "Damage Up" };
+    private final String[] ITEM_NAME = { "Health +1", "Protect 3 sec", "Freeze 3 sec", "Automatic Mode" };
 
     public ItemShows(int spaceY) {
         setLayout(null);

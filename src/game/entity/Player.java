@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import game.GamePlay;
 import game.util.ImageManager;
+import game.util.SoundManager;
 
 public class Player extends Entity {
 
@@ -21,7 +22,9 @@ public class Player extends Entity {
     }
 
     public void shoot(MouseEvent e) {
-
+        Bullet bullet = new Bullet(e);
+        gp.addBullet(bullet);
+        SoundManager.play(SHOOT_SOUND);
     }
 
     @Override

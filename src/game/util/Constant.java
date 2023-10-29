@@ -11,17 +11,36 @@ public class Constant {
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1080;
     public static final int FRAME_RATE = 60;
+    public static final long ENEMY_SPAWN_DELAY = 2000;
     public static boolean sound_state = true;
 
     // ========== PLANET ========== \\
     public static String PLANET_IMG = "res/images/planets/planet00.png";
     public static int PLANET_SIZE = 250;
 
+    // ========== BULLET ========== \\
+    public static String BULLET_IMG = "res/images/bullet.png";
+    public static int BULLET_SPEED = 2;
+    public static int BULLET_WIDTH = 40;
+    public static int BULLET_HEIGHT = 30;
+
+    // ========== METEOR ========== \\
+    public static String METEOR_IMG = "res/images/meteor.png";
+    public static int METEOR_SIZE = 80;
+    public static int METEOR_SPEED = 1;
+    public static final int MAX_COUNT_METEOR = 99;
+
     // ========== PLAYER ========== \\
     public static String PLAYER_IMG = "res/images/player2.png";
     public static final int PLAYER_WIDTH = 70;
     public static final int PLAYER_HEIGHT = 79;
     public static final int MAX_HEALTH = 5;
+
+    // ========== ITEM ========== \\
+    public static int DROP_RATE = 5;
+    public static final int FREEZE_TIME = 3;
+    public static final int AUTOMATIC_TIME = 10;
+    public static final int PROTECT_TIME = 3;
 
     // ========== ASSETS ========== \\
     // GAME
@@ -42,6 +61,8 @@ public class Constant {
     public static BufferedImage ITEM_FREEZE;
     public static BufferedImage ITEM_DAMAGE;
 
+    public static BufferedImage spriteExplosion;
+
     // Fonts
     public static Font fRegular;
     public static Font fSemiBold;
@@ -50,6 +71,9 @@ public class Constant {
     // Sounds
     public static Clip bgm1;
     public static Clip bgm2;
+    public static Clip SHOOT_SOUND;
+    public static Clip BOOM_SOUND;
+    public static Clip COUNT_SOUND;
 
     // Cursor
     private final static String CURSOR_PATH = "res/images/crosshair.png";
@@ -74,8 +98,14 @@ public class Constant {
             bgm1 = SoundManager.getClip("res/sounds/bgm1.wav");
             bgm2 = SoundManager.getClip("res/sounds/bgm2.wav");
 
+            BOOM_SOUND = SoundManager.getClip("res/sounds/gameOver.wav");
+            SHOOT_SOUND = SoundManager.getClip("res/sounds/shoot.wav");
+            COUNT_SOUND = SoundManager.getClip("res/sounds/count.wav");
+
             SOUND_ON = ImageManager.resizeImage("res/images/sound_on.png", 50, 50);
             SOUND_OFF = ImageManager.resizeImage("res/images/sound_off.png", 50, 50);
+
+            spriteExplosion = ImageManager.load("res/images/effects/explosion.png");
 
             ITEM_HEART = ImageManager.resizeImage("res/images/items/heart.png", 50, 50);
             ITEM_GRAY_HEART = ImageManager.resizeImage("res/images/items/heart_gray.png", 50, 50);

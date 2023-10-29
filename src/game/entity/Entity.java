@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 
 public abstract class Entity {
     int x, y;
+    int realX, realY;
     BufferedImage image;
 
     public Entity(int x, int y, BufferedImage image) {
