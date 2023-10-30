@@ -95,7 +95,7 @@ public class GamePlay extends JPanel implements Runnable {
         gameOver = false;
         isPause = false;
 
-        freezeTime = 0;
+        freezeTime = 10;
         protectTime = 10;
         automaticTime = 10;
 
@@ -107,7 +107,7 @@ public class GamePlay extends JPanel implements Runnable {
 
         score = 0;
 
-        level = 0;
+        level = 99;
         health = MAX_HEALTH;
         lastTimeMeteorSpawn = System.currentTimeMillis();
 
@@ -197,7 +197,14 @@ public class GamePlay extends JPanel implements Runnable {
         // bullet for i
         for (int i = 0; i < bullets.size(); i++) {
             Bullet bullet = bullets.get(i);
+            if (bullet == null) {
+                bullets.remove(i);
+                i--;
+                continue; // add this line to skip the rest of the loop
+            }
+
             bullet.update();
+
             if (bullet.isOutOfScreen()) {
                 bullets.remove(i);
                 i--;
@@ -207,10 +214,6 @@ public class GamePlay extends JPanel implements Runnable {
         // meteor for i
         for (int i = 0; i < meteors.size(); i++) {
             Meteor meteor = meteors.get(i);
-            if (meteor.inScreen() && isFreeze()) {
-                continue;
-            }
-
             meteor.update();
 
             if (meteor.exploding) {
@@ -270,7 +273,7 @@ public class GamePlay extends JPanel implements Runnable {
             lastTimeMeteorSpawn = System.currentTimeMillis();
             meteors.add(new Meteor(this));
             spawnedMeteor++;
-            nextDelaySpawn = random(100, ENEMY_SPAWN_DELAY);
+            nextDelaySpawn = random(100, ENEMY_SPAWN_DELAY - level * 10);
         }
 
         // level up

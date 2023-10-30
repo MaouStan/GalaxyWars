@@ -28,7 +28,6 @@ public class Player extends Entity {
         this.gp = gp;
         cooldown = 1000 / SHOOT_RATE;
         ready = true;
-        timer = new Timer();
     }
 
     public void shoot(MouseEvent e) {
@@ -62,6 +61,7 @@ public class Player extends Entity {
                 gp.addBullet(bullet);
                 SoundManager.play(SHOOT_SOUND);
                 // new timer for cooldown
+                timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -69,7 +69,7 @@ public class Player extends Entity {
                         // close
                         timer.cancel();
                     }
-                }, 100);
+                }, cooldown);
             }
         }
     }

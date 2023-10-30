@@ -18,6 +18,7 @@ public class Meteor extends Entity {
     public boolean destroyed = false;
     Point target;
     double speed;
+    private Timer timer;
 
     // Explosion animation variables
     private BufferedImage spriteExplosion;
@@ -84,7 +85,7 @@ public class Meteor extends Entity {
         if (!destroyed && !exploding) {
             exploding = true;
             SoundManager.play(BOOM_SOUND);
-            Timer timer = new Timer();
+            timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -109,10 +110,15 @@ public class Meteor extends Entity {
         if (gp.isPause()) {
             return;
         }
+
         if (destroyed) {
             return;
         }
         if (exploding) {
+            return;
+        }
+
+        if (inScreen() && gp.isFreeze()) {
             return;
         }
 
@@ -142,13 +148,21 @@ public class Meteor extends Entity {
         if (exploding) {
             g2d.drawImage(spriteExplosion, x - 128, y - 128, x + 128, y + 128, explosionStateX, explosionStateY,
                     explosionStateX + 256, explosionStateY + 256, null);
+
+            if (explosionState == 16) {
+                destroyed = true;
+                exploding = false;
+                timer.cancel();
+            }
         } else if (!destroyed) {
             g2d.drawImage(image, x, y, null);
         }
     }
 
     public boolean inScreen() {
-        return x > -image.getWidth() / 2 && x < SCREEN_WIDTH + image.getWidth() / 2 && y > -image.getHeight() / 2
-                && y < SCREEN_HEIGHT + image.getHeight() / 2;
+        if (x < 0 || x > SCREEN_WIDTH - image.getWidth() || y < 0 || y > SCREEN_HEIGHT - image.getHeight()) {
+            return false;
+        }
+        return true;
     }
 }

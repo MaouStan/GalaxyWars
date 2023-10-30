@@ -19,7 +19,7 @@ public class Bullet extends Entity {
     // private int oldX1, oldY1, oldX2, oldY2;
 
     public Bullet(GamePlay gp, MouseEvent e) {
-        super(-PLAYER_WIDTH / 2 + BULLET_WIDTH / 2 - BULLET_WIDTH / 4, -PLAYER_HEIGHT * 2 - BULLET_HEIGHT * 2 + 25,
+        super(-PLAYER_WIDTH / 2 + BULLET_WIDTH / 2 - BULLET_WIDTH / 4, -PLAYER_HEIGHT * 2 - BULLET_HEIGHT,
                 ImageManager.resizeImage(BULLET_IMG, BULLET_WIDTH, BULLET_HEIGHT));
 
         deg = Math.atan2(e.getX() - (SCREEN_WIDTH / 2) - Math.ceil(PLAYER_HEIGHT / 4),
