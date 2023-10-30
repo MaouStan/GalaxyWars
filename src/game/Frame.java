@@ -19,7 +19,7 @@ public class Frame extends JFrame {
         setResizable(false);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setIconImage(GAME_LOGO);
-        // setUndecorated(true); // no header
+        setUndecorated(true); // no header
         changePanel(new MainPane());
 
         // set cursor

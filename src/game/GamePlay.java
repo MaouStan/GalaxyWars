@@ -227,10 +227,6 @@ public class GamePlay extends JPanel implements Runnable {
             }
         }
 
-        if (spawnedMeteor == Math.min(MAX_COUNT_METEOR, level * 5)) {
-            amountMeteorEnough = meteors.size();
-        }
-
         // meteor and bullet
         for (int i = 0; i < meteors.size(); i++) {
             Meteor meteor = meteors.get(i);
@@ -262,6 +258,10 @@ public class GamePlay extends JPanel implements Runnable {
                 items.remove(i);
                 i--;
             }
+        }
+
+        if (spawnedMeteor == Math.min(MAX_COUNT_METEOR, level * 5) && meteors.size() == 0) {
+            amountMeteorEnough = 0;
         }
 
         // spawn ENEMY_SPAWN_DELAY
