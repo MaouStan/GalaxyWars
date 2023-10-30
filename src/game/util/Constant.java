@@ -33,6 +33,7 @@ public class Constant {
 
     // ========== PLAYER ========== \\
     public static String PLAYER_IMG = "res/images/player2.png";
+    public static String SHIELD_IMG = "res/images/shield.png";
     public static final int PLAYER_WIDTH = 70;
     public static final int SHOOT_RATE = 10; // per sec
     public static final int PLAYER_HEIGHT = 79;
@@ -63,7 +64,7 @@ public class Constant {
     public static BufferedImage ITEM_GRAY_HEART;
     public static BufferedImage ITEM_SHIELD;
     public static BufferedImage ITEM_FREEZE;
-    public static BufferedImage ITEM_DAMAGE;
+    public static BufferedImage ITEM_AUTOMATIC;
 
     public static BufferedImage spriteExplosion;
 
@@ -117,7 +118,7 @@ public class Constant {
             ITEM_GRAY_HEART = ImageManager.resizeImage("res/images/items/heart_gray.png", 50, 50);
             ITEM_SHIELD = ImageManager.resizeImage("res/images/items/shield.png", 50, 50);
             ITEM_FREEZE = ImageManager.resizeImage("res/images/items/freeze.png", 50, 50);
-            ITEM_DAMAGE = ImageManager.resizeImage("res/images/items/damage.png", 50, 50);
+            ITEM_AUTOMATIC = ImageManager.resizeImage("res/images/items/damage.png", 50, 50);
 
             fRegular = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/Orbitron-Regular.ttf"));
             fSemiBold = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/Orbitron-SemiBold.ttf"));

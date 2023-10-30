@@ -371,7 +371,7 @@ public class GamePlay extends JPanel implements Runnable {
 
                 break;
 
-            case DAMAGE:
+            case AUTOMATIC:
                 automaticTime = item.getEffectTime();
 
                 // del old timer
@@ -451,21 +451,31 @@ public class GamePlay extends JPanel implements Runnable {
         graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
 
         if (isFreeze()) {
-            String freezeString = String.format("Freeze Time : %02d", freezeTime / 1000);
+            // drawTime
+            String freezeString = String.format("%02d.%02d", (freezeTime / 1000), (freezeTime % 1000) / 10);
             int freezeWidth = graphics2d.getFontMetrics().stringWidth(freezeString);
             graphics2d.drawString(freezeString, SCREEN_WIDTH - freezeWidth - 50, 150);
+
+            // drawIcon Center Left text
+            g.drawImage(ITEM_FREEZE, SCREEN_WIDTH - freezeWidth - 100, 150 - 35, 50, 50, null);
         }
 
         if (isAutomatic()) {
-            String autoString = String.format("RapidFire Time : %02d", automaticTime / 1000);
+            String autoString = String.format("%02d.%02d", (automaticTime / 1000), (automaticTime % 1000) / 10);
             int autoWidth = graphics2d.getFontMetrics().stringWidth(autoString);
             graphics2d.drawString(autoString, SCREEN_WIDTH - autoWidth - 50, 200);
+
+            // drawIcon
+            g.drawImage(ITEM_AUTOMATIC, SCREEN_WIDTH - autoWidth - 100, 200 - 35, 50, 50, null);
         }
 
         if (isProtected()) {
-            String protectString = String.format("Protect Time : %02d", protectTime / 1000);
+            String protectString = String.format("%02d.%02d", (protectTime / 1000), (protectTime % 1000) / 10);
             int protectWidth = graphics2d.getFontMetrics().stringWidth(protectString);
             graphics2d.drawString(protectString, SCREEN_WIDTH - protectWidth - 50, 250);
+
+            // drawIcon
+            g.drawImage(ITEM_SHIELD, SCREEN_WIDTH - protectWidth - 100, 250 - 35, 50, 50, null);
         }
 
         // Level
@@ -509,6 +519,18 @@ public class GamePlay extends JPanel implements Runnable {
             if (item != null) {
                 item.draw(graphics2d);
             }
+        }
+
+        // Freeze blue overlay screen
+        if (isFreeze()) {
+            g.setColor(new Color(0, 0, 255, 30));
+            g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+
+        // Automatic red over screen
+        if (isAutomatic()) {
+            g.setColor(new Color(255, 0, 0, 30));
+            g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
     }
 
