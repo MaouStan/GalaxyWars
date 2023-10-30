@@ -3,6 +3,7 @@ package game.gui;
 import javax.swing.*;
 
 import game.components.OutlineLabel;
+import game.util.SoundManager;
 import game.components.ItemShows;
 
 import java.awt.*;
@@ -14,6 +15,10 @@ import game.GamePlay;
 
 public class MainPane extends JPanel {
     public MainPane() {
+
+        Frame.getInstance().sound = new SoundManager(bgm1);
+        Frame.getInstance().sound.play(true);
+
         setLayout(null);
         // set Background Image
         JLabel background = new JLabel();

@@ -63,7 +63,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         }
 
         player.update(e);
-        player.inLoop = false;
+        player.stopThread();
     }
 
     @Override

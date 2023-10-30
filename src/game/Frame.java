@@ -2,7 +2,6 @@ package game;
 
 import javax.swing.*;
 
-import game.gui.MainPane;
 import game.util.SoundManager;
 
 import java.awt.Dimension;
@@ -20,19 +19,15 @@ public class Frame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setIconImage(GAME_LOGO);
         setUndecorated(true); // no header
-        changePanel(new MainPane());
 
         // set cursor
         setCursor(CUSTOM_CURSOR);
-
-        // sound
-        sound = new SoundManager(bgm1);
-        sound.play(true);
 
         // ======= SINGLETON ======
         if (instance == null) {
             instance = this;
         }
+
     }
 
     public static Frame getInstance() {

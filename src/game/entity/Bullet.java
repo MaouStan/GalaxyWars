@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 
 import game.GamePlay;
 import game.util.ImageManager;
-import java.awt.Color;
 
 public class Bullet extends Entity {
 

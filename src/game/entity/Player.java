@@ -4,7 +4,6 @@ import static game.util.Constant.*;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,8 +17,9 @@ public class Player extends Entity {
     private boolean ready;
     private int cooldown;
     private MouseEvent mouseEvent;
-    public boolean inLoop;
     GamePlay gp;
+    Thread thread;
+    Timer timer;
 
     public Player(GamePlay gp) {
         super(-PLAYER_WIDTH / 2, -PLAYER_HEIGHT * 2 - 50,
@@ -28,49 +28,55 @@ public class Player extends Entity {
         this.gp = gp;
         cooldown = 1000 / SHOOT_RATE;
         ready = true;
-        inLoop = false;
+        timer = new Timer();
     }
 
     public void shoot(MouseEvent e) {
         mouseEvent = e;
-        if (inLoop) {
-            return;
-        }
-
         if (ready) {
+            if (gp.isAutomatic() && gp.isHold()) {
+                if (thread != null) {
+                    thread.interrupt();
+                }
 
-            if (gp.isAutomatic()) {
-                inLoop = true;
-                new Thread(() -> {
+                thread = new Thread(() -> {
                     do {
                         if (ready) {
                             ready = false;
                             Bullet bullet = new Bullet(gp, mouseEvent);
                             gp.addBullet(bullet);
                             SoundManager.play(SHOOT_SOUND);
-                            new Timer().schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    ready = true;
-                                }
-                            }, cooldown);
+                            try {
+                                Thread.sleep(cooldown);
+                            } catch (InterruptedException ex) {
+                            }
+                            ready = true;
                         }
                     } while (gp.isHold() && gp.isAutomatic());
-                    inLoop = false;
-                }).start();
+                });
+
+                thread.start();
             } else {
                 ready = false;
                 Bullet bullet = new Bullet(gp, mouseEvent);
                 gp.addBullet(bullet);
                 SoundManager.play(SHOOT_SOUND);
                 // new timer for cooldown
-                new Timer().schedule(new TimerTask() {
+                timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         ready = true;
+                        // close
+                        timer.cancel();
                     }
                 }, 100);
             }
+        }
+    }
+
+    public void stopThread() {
+        if (thread != null) {
+            thread.interrupt();
         }
     }
 
