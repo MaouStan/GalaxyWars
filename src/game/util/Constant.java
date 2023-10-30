@@ -34,14 +34,17 @@ public class Constant {
     // ========== PLAYER ========== \\
     public static String PLAYER_IMG = "res/images/player2.png";
     public static final int PLAYER_WIDTH = 70;
+    public static final int SHOOT_RATE = 10; // per sec
     public static final int PLAYER_HEIGHT = 79;
     public static final int MAX_HEALTH = 5;
 
     // ========== ITEM ========== \\
+    public static int ITEM_SIZE = 50;
+    public static int ITEM_SPEED = 10;
     public static int DROP_RATE = 5;
-    public static final int FREEZE_TIME = 3;
-    public static final int AUTOMATIC_TIME = 10;
-    public static final int PROTECT_TIME = 3;
+    public static final int FREEZE_TIME = 3_000;
+    public static final int AUTOMATIC_TIME = 10_000;
+    public static final int PROTECT_TIME = 3_000;
 
     // ========== ASSETS ========== \\
     // GAME
@@ -75,6 +78,7 @@ public class Constant {
     public static Clip SHOOT_SOUND;
     public static Clip BOOM_SOUND;
     public static Clip COUNT_SOUND;
+    public static Clip ITEM_COLLECT;
 
     // Cursor
     private final static String CURSOR_PATH = "res/images/crosshair.png";
@@ -102,6 +106,7 @@ public class Constant {
             BOOM_SOUND = SoundManager.getClip("res/sounds/gameOver.wav");
             SHOOT_SOUND = SoundManager.getClip("res/sounds/shoot.wav");
             COUNT_SOUND = SoundManager.getClip("res/sounds/count.wav");
+            ITEM_COLLECT = SoundManager.getClip("res/sounds/pickup2.wav");
 
             SOUND_ON = ImageManager.resizeImage("res/images/sound_on.png", 50, 50);
             SOUND_OFF = ImageManager.resizeImage("res/images/sound_off.png", 50, 50);

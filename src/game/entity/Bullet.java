@@ -15,9 +15,11 @@ public class Bullet extends Entity {
     private double deg;
     private int realX, realY;
     private int speed;
+
+    GamePlay gp;
     // private int oldX1, oldY1, oldX2, oldY2;
 
-    public Bullet(MouseEvent e) {
+    public Bullet(GamePlay gp, MouseEvent e) {
         super(-PLAYER_WIDTH / 2 + BULLET_WIDTH / 2 - BULLET_WIDTH / 4, -PLAYER_HEIGHT * 2 - BULLET_HEIGHT * 2 + 25,
                 ImageManager.resizeImage(BULLET_IMG, BULLET_WIDTH, BULLET_HEIGHT));
 
@@ -26,6 +28,7 @@ public class Bullet extends Entity {
 
         // real Pos
         speed = BULLET_SPEED * 10;
+        this.gp = gp;
     }
 
     public boolean isOutOfScreen() {
@@ -47,13 +50,13 @@ public class Bullet extends Entity {
 
     @Override
     public void update() {
-        if (GamePlay.getInstance().isPause()) {
+        if (gp.isPause()) {
             return;
         }
 
         y -= speed;
 
-        realX = (int) (-(y + speed / 2) * Math.sin(deg)) - BULLET_HITBOX / 2;
+        realX = (int) (-(y + BULLET_HITBOX / 2 + speed / 2) * Math.sin(deg)) - BULLET_HITBOX / 2;
         realY = (int) (+(y + speed / 2) * Math.cos(deg)) - BULLET_HITBOX / 2;
 
         realX += SCREEN_WIDTH / 2;
@@ -84,9 +87,9 @@ public class Bullet extends Entity {
         g2d2.drawImage(image, x + BULLET_HITBOX / 4, y - BULLET_HITBOX / 4, BULLET_WIDTH, BULLET_HEIGHT, null);
         g2d2.dispose();
 
-        g2d2 = (Graphics2D) g2d.create();
-        g2d2.setColor(Color.red);
-        g2d2.drawRect(realX, realY, BULLET_HITBOX, BULLET_HITBOX);
-        g2d2.dispose();
+        // g2d2 = (Graphics2D) g2d.create();
+        // g2d2.setColor(Color.red);
+        // g2d2.drawRect(realX, realY, BULLET_HITBOX, BULLET_HITBOX);
+        // g2d2.dispose();
     }
 }

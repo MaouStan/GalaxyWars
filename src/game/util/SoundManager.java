@@ -20,7 +20,7 @@ public class SoundManager {
     public void play(boolean loop) {
         this.clip.setFramePosition(0);
         this.clip.start();
-        this.clip.loop(loop ? Clip.LOOP_CONTINUOUSLY : Clip.LOOP_CONTINUOUSLY);
+        this.clip.loop(loop ? Clip.LOOP_CONTINUOUSLY : 0);
     }
 
     public void setSound(Clip sound) {

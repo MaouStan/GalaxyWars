@@ -2,6 +2,8 @@ package game.components;
 
 import javax.swing.JPanel;
 
+import game.item.ItemType;
+
 import javax.swing.JLabel;
 
 import java.awt.Color;
@@ -11,13 +13,6 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 
 public class ItemShows extends JPanel {
-    private final BufferedImage[] ITEM_IMAGE = {
-            ITEM_HEART,
-            ITEM_SHIELD,
-            ITEM_FREEZE,
-            ITEM_DAMAGE };
-    private final String[] ITEM_NAME = { "Health +1", "Protect 3 sec", "Freeze 3 sec", "Automatic Mode" };
-
     public ItemShows(int spaceY) {
         setLayout(null);
         setBackground(new Color(255, 255, 255, 0));
@@ -32,15 +27,19 @@ public class ItemShows extends JPanel {
         title.setVerticalAlignment(JLabel.CENTER);
         add(title);
 
-        for (int i = 0; i < ITEM_IMAGE.length; i++) {
+        // get ITEM from enum itemType
+        for (int i = 0; i < ItemType.values().length; i++) {
+            BufferedImage ITEM_IMAGE = ItemType.values()[i].getImage();
+            String ITEM_NAME = ItemType.values()[i].getDescription();
+
             // ICON
             JLabel icon = new JLabel();
-            icon.setIcon(new ImageIcon(ITEM_IMAGE[i]));
+            icon.setIcon(new ImageIcon(ITEM_IMAGE));
             icon.setBounds(0, i * spaceY + 50, 50, 50);
             add(icon);
 
             // NAME
-            OutlineLabel name = new OutlineLabel(ITEM_NAME[i], 1);
+            OutlineLabel name = new OutlineLabel(ITEM_NAME, 1);
             name.setOutlineColor(Color.GRAY);
             name.setForeground(Color.white);
             name.setFont(fRegular.deriveFont(Font.BOLD, 16f));

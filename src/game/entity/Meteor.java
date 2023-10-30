@@ -26,34 +26,35 @@ public class Meteor extends Entity {
     private int explosionStateY = 0;
     public boolean exploding = false;
 
-    public Meteor() {
+    GamePlay gp;
+
+    public Meteor(GamePlay gp) {
         super(0, 0, null);
         int type = random(1, 4);
         double coordsX = 0;
         double coordsY = 0;
-
+        size = random(1, 3);
         switch (type) {
             case 1:
                 coordsX = random(0, SCREEN_WIDTH);
-                coordsY = 0 - METEOR_MAX_SIZE * 2;
+                coordsY = 0 - (METEOR_MAX_SIZE / size);
                 break;
             case 2:
-                coordsX = SCREEN_WIDTH + METEOR_MAX_SIZE * 2;
+                coordsX = SCREEN_WIDTH + (METEOR_MAX_SIZE / size);
                 coordsY = random(0, SCREEN_HEIGHT);
                 break;
             case 3:
                 coordsX = random(0, SCREEN_WIDTH);
-                coordsY = SCREEN_HEIGHT + METEOR_MAX_SIZE * 2;
+                coordsY = SCREEN_HEIGHT + (METEOR_MAX_SIZE / size);
                 break;
             case 4:
-                coordsX = 0 - METEOR_MAX_SIZE * 2;
+                coordsX = 0 - (METEOR_MAX_SIZE / size);
                 coordsY = random(0, SCREEN_HEIGHT);
                 break;
         }
 
         x = (int) coordsX;
         y = (int) coordsY;
-        size = random(1, 3);
         deg = Math.atan2(coordsX - (SCREEN_WIDTH / 2), -(coordsY - (SCREEN_HEIGHT / 2)));
 
         // calc meteor Size
@@ -63,7 +64,7 @@ public class Meteor extends Entity {
         image = ImageManager.resizeImage("res/images/meteor.png", width, height);
 
         // speed
-        speed = random(10, 30) / 10f;
+        speed = random(5, 20) / 10f;
 
         target = new Point();
         target.x = (int) (SCREEN_WIDTH / 2);
@@ -71,6 +72,8 @@ public class Meteor extends Entity {
 
         // Load explosion sprite sheet
         spriteExplosion = ImageManager.load("res/images/effects/explosion.png");
+
+        this.gp = gp;
     }
 
     private int random(int from, int to) {
@@ -85,7 +88,7 @@ public class Meteor extends Entity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (GamePlay.getInstance().isPause()) {
+                    if (gp.isPause()) {
                         return;
                     }
                     explosionStateX = (explosionState % 4) * 256;
@@ -103,7 +106,7 @@ public class Meteor extends Entity {
 
     @Override
     public void update() {
-        if (GamePlay.getInstance().isPause()) {
+        if (gp.isPause()) {
             return;
         }
         if (destroyed) {
@@ -114,11 +117,24 @@ public class Meteor extends Entity {
         }
 
         // Calculate Vector
-        double dx = target.x - x;
-        double dy = target.y - y;
-        double distance = Math.max(1, (int) Math.sqrt(dx * dx + dy * dy));
-        x += (int) (speed * dx / distance * size);
-        y += (int) (speed * dy / distance * size);
+        double dx = target.x - x; // Calculate the difference in x-coordinates
+        double dy = target.y - y; // Calculate the difference in y-coordinates
+        double sqr = Math.sqrt(dx * dx + dy * dy); // Calculate the Euclidean distance
+        // Round the distance up to the nearest whole number
+        double distance = Math.signum(sqr) * Math.ceil(Math.abs(sqr));
+
+        int oldX = x, oldY = y; // Store the old position
+
+        // Move the x-coordinate towards the target
+        x += Math.signum(dx) * Math.ceil(Math.abs(speed * dx / distance * size));
+        // Move the y-coordinate towards the target
+        y += Math.signum(dy) * Math.ceil(Math.abs(speed * dy / distance * size));
+
+        // check freeze
+        if (oldX == x && oldY == y) {
+            System.err.println(this + " FREEZE" + " : " + distance + " : " + dx + " : " + dy);
+            explosion();
+        }
     }
 
     @Override
@@ -129,5 +145,10 @@ public class Meteor extends Entity {
         } else if (!destroyed) {
             g2d.drawImage(image, x, y, null);
         }
+    }
+
+    public boolean inScreen() {
+        return x > -image.getWidth() / 2 && x < SCREEN_WIDTH + image.getWidth() / 2 && y > -image.getHeight() / 2
+                && y < SCREEN_HEIGHT + image.getHeight() / 2;
     }
 }

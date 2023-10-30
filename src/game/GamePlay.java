@@ -11,7 +11,8 @@ import game.entity.Player;
 import game.gui.GameOverPanel;
 import game.gui.PausePanel;
 import game.util.SoundManager;
-
+import game.item.Item;
+import game.item.ItemType;
 import java.awt.*;
 import static game.util.Constant.*;
 import java.lang.Runnable;
@@ -21,7 +22,6 @@ import java.util.Timer;
 
 public class GamePlay extends JPanel implements Runnable {
     // GAME
-    private static GamePlay instance;
     private boolean gameOver;
     private boolean isPause;
     private Thread thread;
@@ -29,16 +29,22 @@ public class GamePlay extends JPanel implements Runnable {
     private int score;
     private int level;
     private int spawnedMeteor;
-    private int killedMeteor;
+    private int amountMeteorEnough;
     private long lastTimeMeteorSpawn;
     private long nextDelaySpawn;
     private Timer timer;
     private boolean inTimer = false;
+    private boolean hold = false;
 
     // ITEM
     private int automaticTime;
     private int freezeTime;
     private int protectTime;
+
+    // threadItem counter time
+    Timer automaticTimer;
+    Timer freezeTimer;
+    Timer protectTimer;
 
     // PLANET
     private int health;
@@ -52,6 +58,9 @@ public class GamePlay extends JPanel implements Runnable {
 
     // Meteor
     private ArrayList<Meteor> meteors;
+
+    // Item
+    private ArrayList<Item> items;
 
     // Controller
     private KeyHandler keyHandler;
@@ -76,10 +85,6 @@ public class GamePlay extends JPanel implements Runnable {
             Frame.getInstance().sound.play(true);
         }
 
-        // ======= SINGLETON ======
-        if (instance == null) {
-            instance = this;
-        }
     }
 
     private void init() {
@@ -94,21 +99,28 @@ public class GamePlay extends JPanel implements Runnable {
         protectTime = 0;
         automaticTime = 0;
 
+        automaticTimer = null;
+        freezeTimer = null;
+        protectTimer = null;
+
         seconds = -3;
 
         score = 0;
 
-        spawnedMeteor = 0;
-        killedMeteor = 0;
-        nextDelaySpawn = 0;
-
         level = 0;
         health = MAX_HEALTH;
         lastTimeMeteorSpawn = System.currentTimeMillis();
-        planet = new Planet();
+
+        spawnedMeteor = 0;
+        amountMeteorEnough = Math.min(MAX_COUNT_METEOR, level * 5);
+        nextDelaySpawn = 0;
+
+        planet = new Planet(this);
         player = new Player(this);
+
         bullets = new ArrayList<Bullet>();
         meteors = new ArrayList<Meteor>();
+        items = new ArrayList<Item>();
 
         keyHandler = new KeyHandler(this);
         Frame.getInstance().addKeyListener(keyHandler);
@@ -134,7 +146,7 @@ public class GamePlay extends JPanel implements Runnable {
             @Override
             public void run() {
                 level++;
-                killedMeteor = 0;
+                amountMeteorEnough = Math.min(MAX_COUNT_METEOR, level * 5);
                 spawnedMeteor = 0;
                 nextDelaySpawn = random(100, ENEMY_SPAWN_DELAY);
                 METEOR_SPEED = Math.min(level, 5);
@@ -175,10 +187,6 @@ public class GamePlay extends JPanel implements Runnable {
         isPause = !isPause;
     }
 
-    public static GamePlay getInstance() {
-        return instance;
-    }
-
     public boolean isPause() {
         return isPause;
     }
@@ -199,19 +207,28 @@ public class GamePlay extends JPanel implements Runnable {
         // meteor for i
         for (int i = 0; i < meteors.size(); i++) {
             Meteor meteor = meteors.get(i);
-            meteor.update();
-            if (meteor.exploding) {
+            if (meteor.inScreen() && isFreeze()) {
                 continue;
             }
-            if (meteor.intersect(planet)) {
-                killedMeteor++;
-                meteors.remove(i);
-                i--;
-                health--;
+
+            meteor.update();
+
+            if (meteor.exploding) {
+                continue;
             } else if (meteor.destroyed) {
                 meteors.remove(i);
                 i--;
+            } else if (meteor.intersect(planet)) {
+                if (!isProtected()) {
+                    health--;
+                }
+                meteor.explosion();
+                amountMeteorEnough--;
             }
+        }
+
+        if (spawnedMeteor == Math.min(MAX_COUNT_METEOR, level * 5)) {
+            amountMeteorEnough = meteors.size();
         }
 
         // meteor and bullet
@@ -223,16 +240,27 @@ public class GamePlay extends JPanel implements Runnable {
             for (int j = 0; j < bullets.size(); j++) {
                 Bullet bullet = bullets.get(j);
                 if (bullet.intersect(meteor)) {
-                    // meteors.remove(i);
-                    // i--;
-
+                    int spawnX = meteor.getX();
+                    int spawnY = meteor.getY();
+                    spawnItem(spawnX, spawnY);
                     meteor.explosion();
-
                     bullets.remove(j);
-                    j--;
                     score += 10;
-                    killedMeteor++;
+                    amountMeteorEnough--;
+                    break;
                 }
+            }
+        }
+
+        // item update
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            item.update();
+            // if touch planet planet
+            if (item.intersect(planet)) {
+                applyEffect(item.getItem());
+                items.remove(i);
+                i--;
             }
         }
 
@@ -240,14 +268,14 @@ public class GamePlay extends JPanel implements Runnable {
         if (System.currentTimeMillis() - lastTimeMeteorSpawn > nextDelaySpawn && spawnedMeteor < level * 5
                 && spawnedMeteor < MAX_COUNT_METEOR) {
             lastTimeMeteorSpawn = System.currentTimeMillis();
-            meteors.add(new Meteor());
+            meteors.add(new Meteor(this));
             spawnedMeteor++;
             nextDelaySpawn = random(100, ENEMY_SPAWN_DELAY);
         }
 
         // level up
         if (level != 0 && spawnedMeteor == Math.min(MAX_COUNT_METEOR, level * 5)
-                && killedMeteor >= Math.min(MAX_COUNT_METEOR, level * 5)) {
+                && amountMeteorEnough <= 0) {
 
             if (!inTimer) {
                 inTimer = true;
@@ -256,7 +284,7 @@ public class GamePlay extends JPanel implements Runnable {
                     @Override
                     public void run() {
                         level++;
-                        killedMeteor = 0;
+                        amountMeteorEnough = Math.min(MAX_COUNT_METEOR, level * 5);
                         spawnedMeteor = 0;
                         nextDelaySpawn = random(100, ENEMY_SPAWN_DELAY);
                         METEOR_SPEED = Math.min(level, 5);
@@ -272,6 +300,19 @@ public class GamePlay extends JPanel implements Runnable {
         }
     }
 
+    private void spawnItem(int spawnX, int spawnY) {
+        // calc rate
+        int rate = random(1, 100);
+        if (rate <= DROP_RATE * level) {
+            // index Item
+            int index = random(0, ItemType.values().length - 1);
+            ItemType itemType = ItemType.values()[index];
+
+            Item item = new Item(this, itemType, spawnX, spawnY, planet.getPoint());
+            items.add(item);
+        }
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -284,18 +325,83 @@ public class GamePlay extends JPanel implements Runnable {
         return (int) (Math.floor(Math.random() * (enemySpawnDelay - from + 1)) + from);
     }
 
-    public void applayEffect(int effect) {
-        switch (effect) {
-            case 0:
-                freezeTime = FREEZE_TIME;
+    public void applyEffect(ItemType item) {
+        switch (item) {
+            case FREEZE:
+                freezeTime = item.getEffectTime();
+
+                // del old timer
+                if (freezeTimer != null) {
+                    freezeTimer.cancel();
+                }
+
+                freezeTimer = new Timer();
+                freezeTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        freezeTime--;
+                        if (freezeTime <= 0) {
+                            freezeTimer.cancel();
+                            freezeTimer = null;
+                        }
+                    }
+                }, 0, 1);
+
                 break;
-            case 1:
-                protectTime = PROTECT_TIME;
+
+            case SHIELD:
+                protectTime = item.getEffectTime();
+
+                // del old timer
+                if (protectTimer != null) {
+                    protectTimer.cancel();
+                }
+
+                protectTimer = new Timer();
+                protectTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        protectTime--;
+                        if (protectTime <= 0) {
+                            protectTimer.cancel();
+                            protectTimer = null;
+                        }
+                    }
+                }, 0, 1);
+
                 break;
-            case 2:
-                automaticTime = AUTOMATIC_TIME;
+
+            case DAMAGE:
+                automaticTime = item.getEffectTime();
+
+                // del old timer
+                if (automaticTimer != null) {
+                    automaticTimer.cancel();
+                }
+
+                automaticTimer = new Timer();
+                automaticTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        automaticTime--;
+                        if (automaticTime <= 0) {
+                            automaticTimer.cancel();
+                            automaticTimer = null;
+                        }
+                    }
+                }, 0, 1);
+
+                break;
+
+            case HEART:
+                health = Math.min(MAX_HEALTH, health + item.getEffectTime());
+                break;
+            default:
                 break;
         }
+
+        // play Sound
+        SoundManager.play(ITEM_COLLECT);
     }
 
     public boolean isFreeze() {
@@ -304,6 +410,10 @@ public class GamePlay extends JPanel implements Runnable {
 
     public boolean isAutomatic() {
         return automaticTime > 0;
+    }
+
+    public boolean isProtected() {
+        return protectTime > 0;
     }
 
     @Override
@@ -336,6 +446,28 @@ public class GamePlay extends JPanel implements Runnable {
         int scoreWidth = graphics2d.getFontMetrics().stringWidth(scoreString);
         graphics2d.drawString(scoreString, SCREEN_WIDTH - scoreWidth - 50, 50);
 
+        // effectTime
+        graphics2d.setColor(Color.white);
+        graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
+
+        if (isFreeze()) {
+            String freezeString = String.format("Freeze Time : %02d", freezeTime / 1000);
+            int freezeWidth = graphics2d.getFontMetrics().stringWidth(freezeString);
+            graphics2d.drawString(freezeString, SCREEN_WIDTH - freezeWidth - 50, 150);
+        }
+
+        if (isAutomatic()) {
+            String autoString = String.format("RapidFire Time : %02d", automaticTime / 1000);
+            int autoWidth = graphics2d.getFontMetrics().stringWidth(autoString);
+            graphics2d.drawString(autoString, SCREEN_WIDTH - autoWidth - 50, 200);
+        }
+
+        if (isProtected()) {
+            String protectString = String.format("Protect Time : %02d", protectTime / 1000);
+            int protectWidth = graphics2d.getFontMetrics().stringWidth(protectString);
+            graphics2d.drawString(protectString, SCREEN_WIDTH - protectWidth - 50, 250);
+        }
+
         // Level
         graphics2d.setColor(Color.white);
         graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
@@ -345,7 +477,7 @@ public class GamePlay extends JPanel implements Runnable {
         // Enemy Count size / max
         graphics2d.setColor(Color.white);
         graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
-        String enemyString = String.format("%02d / %02d", killedMeteor, Math.min(MAX_COUNT_METEOR, level * 5));
+        String enemyString = String.format("%02d / %02d", amountMeteorEnough, Math.min(MAX_COUNT_METEOR, level * 5));
         int enemyWidth = graphics2d.getFontMetrics().stringWidth(enemyString);
         graphics2d.drawString(enemyString, SCREEN_WIDTH - enemyWidth - 50, 100);
 
@@ -358,15 +490,26 @@ public class GamePlay extends JPanel implements Runnable {
         // Bullet
         ArrayList<Bullet> bulletsCopy = new ArrayList<>(bullets);
         for (Bullet bullet : bulletsCopy) {
-            bullet.draw(graphics2d);
+            if (bullet != null) {
+                bullet.draw(graphics2d);
+            }
         }
 
         // Meteor
         ArrayList<Meteor> meteorsCopy = new ArrayList<>(meteors);
         for (Meteor meteor : meteorsCopy) {
-            meteor.draw(graphics2d);
+            if (meteor != null) {
+                meteor.draw(graphics2d);
+            }
         }
 
+        // Item
+        ArrayList<Item> itemsCopy = new ArrayList<>(items);
+        for (Item item : itemsCopy) {
+            if (item != null) {
+                item.draw(graphics2d);
+            }
+        }
     }
 
     public void run() {
@@ -410,6 +553,7 @@ public class GamePlay extends JPanel implements Runnable {
                         seconds++;
                         oldSecondTime = currentTimeSecond;
                     }
+
                 } else {
                     // add pause panel
                     pausePanel = new PausePanel(this);
@@ -431,6 +575,14 @@ public class GamePlay extends JPanel implements Runnable {
         }
         // gameOverPanel
         gameOver();
+    }
+
+    public void setHold(boolean b) {
+        this.hold = b;
+    }
+
+    public boolean isHold() {
+        return hold;
     }
 
 }

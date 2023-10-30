@@ -4,9 +4,17 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 
 public abstract class Entity {
-    int x, y;
-    int realX, realY;
-    BufferedImage image;
+    protected int x;
+    protected int y;
+    protected BufferedImage image;
+
+    public Entity() {
+    }
+
+    public Entity(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public Entity(int x, int y, BufferedImage image) {
         this.x = x;
