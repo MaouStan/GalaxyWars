@@ -31,4 +31,20 @@ public class ImageManager {
         }
         return originalImage;
     }
+
+    public static BufferedImage resizeImage(String imagePath, int width, int height, int deg) {
+        BufferedImage originalImage = null;
+        try {
+            originalImage = ImageIO.read(new File(imagePath));
+            BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = resizedImage.createGraphics();
+            g2d.rotate(Math.toRadians(deg), width / 2, height / 2);
+            g2d.drawImage(originalImage, 0, 0, width, height, null);
+            g2d.dispose();
+            return resizedImage;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return originalImage;
+    }
 }

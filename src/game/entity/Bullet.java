@@ -38,9 +38,9 @@ public class Bullet extends Entity {
         if (entity instanceof Meteor) {
             Meteor meteor = (Meteor) entity;
             return this.realX < meteor.x + meteor.image.getWidth() &&
-                    this.realX + this.image.getWidth() > meteor.x &&
+                    this.realX + BULLET_HITBOX > meteor.x &&
                     this.realY < meteor.y + meteor.image.getHeight() &&
-                    this.realY + this.image.getHeight() > meteor.y;
+                    this.realY + BULLET_HITBOX > meteor.y;
         }
         return false;
     }
@@ -53,11 +53,11 @@ public class Bullet extends Entity {
 
         y -= speed;
 
-        realX = (int) (-(y + speed / 2) * Math.sin(deg));
-        realY = (int) (+(y + speed / 2) * Math.cos(deg));
+        realX = (int) (-(y + speed / 2) * Math.sin(deg)) - BULLET_HITBOX / 2;
+        realY = (int) (+(y + speed / 2) * Math.cos(deg)) - BULLET_HITBOX / 2;
 
-        realX += SCREEN_WIDTH / 2 - BULLET_WIDTH / 2 - 5;
-        realY += SCREEN_HEIGHT / 2 - BULLET_HEIGHT / 2 - 5;
+        realX += SCREEN_WIDTH / 2;
+        realY += SCREEN_HEIGHT / 2;
 
         // if (!GamePlay.getInstance().isPause()) {
         // oldX1 = x;
@@ -81,13 +81,12 @@ public class Bullet extends Entity {
         Graphics2D g2d2 = (Graphics2D) g2d.create();
         g2d2.translate(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
         g2d2.rotate(deg);
-        g2d2.drawImage(image, x, y, null);
-        g2d2.drawRect(x, y, BULLET_WIDTH, BULLET_HEIGHT);
+        g2d2.drawImage(image, x + BULLET_HITBOX / 4, y - BULLET_HITBOX / 4, BULLET_WIDTH, BULLET_HEIGHT, null);
         g2d2.dispose();
 
         g2d2 = (Graphics2D) g2d.create();
         g2d2.setColor(Color.red);
-        g2d2.drawRect(realX, realY, BULLET_WIDTH, BULLET_HEIGHT);
+        g2d2.drawRect(realX, realY, BULLET_HITBOX, BULLET_HITBOX);
         g2d2.dispose();
     }
 }

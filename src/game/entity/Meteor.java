@@ -119,8 +119,6 @@ public class Meteor extends Entity {
         double distance = Math.max(1, (int) Math.sqrt(dx * dx + dy * dy));
         x += (int) (speed * dx / distance * size);
         y += (int) (speed * dy / distance * size);
-
-        System.out.println(this + " : " + speed);
     }
 
     @Override

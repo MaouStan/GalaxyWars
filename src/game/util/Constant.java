@@ -21,8 +21,9 @@ public class Constant {
     // ========== BULLET ========== \\
     public static String BULLET_IMG = "res/images/bullet.png";
     public static int BULLET_SPEED = 2;
-    public static int BULLET_WIDTH = 40;
-    public static int BULLET_HEIGHT = 30;
+    public static int BULLET_HITBOX = 30;
+    public static int BULLET_WIDTH = 30;
+    public static int BULLET_HEIGHT = 100;
 
     // ========== METEOR ========== \\
     public static String METEOR_IMG = "res/images/meteor.png";
