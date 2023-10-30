@@ -32,6 +32,10 @@ public class Player extends Entity {
     }
 
     public void update(MouseEvent e) {
+        if (GamePlay.getInstance().isPause()) {
+            return;
+        }
+
         deg = Math.atan2(e.getX() - (SCREEN_WIDTH / 2) - Math.ceil(PLAYER_HEIGHT / 4),
                 -(e.getY() - (SCREEN_HEIGHT / 2)) + PLAYER_WIDTH / 2);
     }

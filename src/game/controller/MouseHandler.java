@@ -29,6 +29,8 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (gp.isPause())
+            return;
         player.shoot(e);
     }
 

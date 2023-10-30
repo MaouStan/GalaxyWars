@@ -5,14 +5,17 @@ import static game.util.Constant.*;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+
+import game.GamePlay;
 import game.util.ImageManager;
 import java.awt.Color;
 
 public class Bullet extends Entity {
 
     private double deg;
-    public int realX, realY;
+    private int realX, realY;
     private int speed;
+    // private int oldX1, oldY1, oldX2, oldY2;
 
     public Bullet(MouseEvent e) {
         super(-PLAYER_WIDTH / 2 + BULLET_WIDTH / 2 - BULLET_WIDTH / 4, -PLAYER_HEIGHT * 2 - BULLET_HEIGHT * 2 + 25,
@@ -44,6 +47,9 @@ public class Bullet extends Entity {
 
     @Override
     public void update() {
+        if (GamePlay.getInstance().isPause()) {
+            return;
+        }
 
         y -= speed;
 
@@ -53,7 +59,21 @@ public class Bullet extends Entity {
         realX += SCREEN_WIDTH / 2 - BULLET_WIDTH / 2 - 5;
         realY += SCREEN_HEIGHT / 2 - BULLET_HEIGHT / 2 - 5;
 
+        // if (!GamePlay.getInstance().isPause()) {
+        // oldX1 = x;
+        // oldY1 = y;
+        // oldX2 = realX;
+        // oldY2 = realY;
+        // }
     }
+
+    // // flashBack
+    // public void flashBack() {
+    // x = oldX1;
+    // y = oldY1;
+    // realX = oldX2;
+    // realY = oldY2;
+    // }
 
     @Override
     public void draw(Graphics2D g2d) {

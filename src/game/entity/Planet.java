@@ -2,6 +2,7 @@ package game.entity;
 
 import static game.util.Constant.*;
 
+import game.GamePlay;
 import game.util.ImageManager;
 import java.awt.Graphics2D;
 
@@ -16,6 +17,10 @@ public class Planet extends Entity {
 
     @Override
     public void update() {
+        // check game pause
+        if (GamePlay.getInstance().isPause()) {
+            return;
+        }
         angle += 0.01;
     }
 

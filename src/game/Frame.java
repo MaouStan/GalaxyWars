@@ -36,9 +36,6 @@ public class Frame extends JFrame {
     }
 
     public static Frame getInstance() {
-        if (instance == null) {
-            instance = new Frame();
-        }
         return instance;
     }
 

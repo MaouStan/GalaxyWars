@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import game.GamePlay;
 import game.util.ImageManager;
 import game.util.SoundManager;
 
@@ -16,6 +17,7 @@ public class Meteor extends Entity {
     double deg;
     public boolean destroyed = false;
     Point target;
+    double speed;
 
     // Explosion animation variables
     private BufferedImage spriteExplosion;
@@ -33,27 +35,35 @@ public class Meteor extends Entity {
         switch (type) {
             case 1:
                 coordsX = random(0, SCREEN_WIDTH);
-                coordsY = 0 - 150;
+                coordsY = 0 - METEOR_MAX_SIZE * 2;
                 break;
             case 2:
-                coordsX = SCREEN_WIDTH + 150;
+                coordsX = SCREEN_WIDTH + METEOR_MAX_SIZE * 2;
                 coordsY = random(0, SCREEN_HEIGHT);
                 break;
             case 3:
                 coordsX = random(0, SCREEN_WIDTH);
-                coordsY = SCREEN_HEIGHT + 150;
+                coordsY = SCREEN_HEIGHT + METEOR_MAX_SIZE * 2;
                 break;
             case 4:
-                coordsX = 0 - 150;
+                coordsX = 0 - METEOR_MAX_SIZE * 2;
                 coordsY = random(0, SCREEN_HEIGHT);
                 break;
         }
 
         x = (int) coordsX;
         y = (int) coordsY;
-        size = 3;
+        size = random(1, 3);
         deg = Math.atan2(coordsX - (SCREEN_WIDTH / 2), -(coordsY - (SCREEN_HEIGHT / 2)));
-        image = ImageManager.resizeImage("res/images/meteor.png", METEOR_SIZE, METEOR_SIZE);
+
+        // calc meteor Size
+        int width = (int) (METEOR_MAX_SIZE / size);
+        int height = (int) (METEOR_MAX_SIZE / size);
+
+        image = ImageManager.resizeImage("res/images/meteor.png", width, height);
+
+        // speed
+        speed = random(10, 30) / 10f;
 
         target = new Point();
         target.x = (int) (SCREEN_WIDTH / 2);
@@ -75,6 +85,9 @@ public class Meteor extends Entity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    if (GamePlay.getInstance().isPause()) {
+                        return;
+                    }
                     explosionStateX = (explosionState % 4) * 256;
                     explosionStateY = (explosionState / 4) * 256;
                     explosionState++;
@@ -90,17 +103,24 @@ public class Meteor extends Entity {
 
     @Override
     public void update() {
+        if (GamePlay.getInstance().isPause()) {
+            return;
+        }
         if (destroyed) {
             return;
         }
         if (exploding) {
             return;
         }
+
+        // Calculate Vector
         double dx = target.x - x;
         double dy = target.y - y;
         double distance = Math.max(1, (int) Math.sqrt(dx * dx + dy * dy));
-        x += (int) (dx / distance * size);
-        y += (int) (dy / distance * size);
+        x += (int) (speed * dx / distance * size);
+        y += (int) (speed * dy / distance * size);
+
+        System.out.println(this + " : " + speed);
     }
 
     @Override

@@ -21,6 +21,7 @@ import java.util.Timer;
 
 public class GamePlay extends JPanel implements Runnable {
     // GAME
+    private static GamePlay instance;
     private boolean gameOver;
     private boolean isPause;
     private Thread thread;
@@ -74,6 +75,11 @@ public class GamePlay extends JPanel implements Runnable {
             Frame.getInstance().sound = new SoundManager(bgm2);
             Frame.getInstance().sound.play(true);
         }
+
+        // ======= SINGLETON ======
+        if (instance == null) {
+            instance = this;
+        }
     }
 
     private void init() {
@@ -88,7 +94,7 @@ public class GamePlay extends JPanel implements Runnable {
         protectTime = 0;
         automaticTime = 0;
 
-        seconds = 0;
+        seconds = -3;
 
         score = 0;
 
@@ -134,6 +140,7 @@ public class GamePlay extends JPanel implements Runnable {
                 METEOR_SPEED = Math.min(level, 5);
                 timer.cancel();
                 inTimer = false;
+                seconds = 0;
             }
         }, 3500, 3500);
 
@@ -168,6 +175,14 @@ public class GamePlay extends JPanel implements Runnable {
         isPause = !isPause;
     }
 
+    public static GamePlay getInstance() {
+        return instance;
+    }
+
+    public boolean isPause() {
+        return isPause;
+    }
+
     private void update() {
         planet.update();
 
@@ -189,6 +204,7 @@ public class GamePlay extends JPanel implements Runnable {
                 continue;
             }
             if (meteor.intersect(planet)) {
+                killedMeteor++;
                 meteors.remove(i);
                 i--;
                 health--;
@@ -362,7 +378,7 @@ public class GamePlay extends JPanel implements Runnable {
 
         // Initialize delta and frame rate variables
         double delta = 0.0f;
-        double ns = 1_000_000_000.0f / FRAME_RATE;
+        double ns = 1_000_000_000 / FRAME_RATE;
 
         // Game loop
         while (!gameOver) {
@@ -384,14 +400,13 @@ public class GamePlay extends JPanel implements Runnable {
                 // Update game if not paused
                 if (!isPause) {
                     update();
-
                     // remove pause panel if has
                     if (pausePanel != null) {
                         remove(pausePanel);
                         pausePanel = null;
                     }
 
-                    if (currentTimeSecond - oldSecondTime >= 1_000_000_000.0f) {
+                    if (currentTimeSecond - oldSecondTime >= 1_000_000_000f) {
                         seconds++;
                         oldSecondTime = currentTimeSecond;
                     }
@@ -401,11 +416,13 @@ public class GamePlay extends JPanel implements Runnable {
                     add(pausePanel);
                     // pause until unpause
                     while (isPause) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        repaint();
+                        update();
+                        lastTimeMeteorSpawn = System.currentTimeMillis();
+
+                        // Update time variables
+                        oldTime = currentTime;
+                        currentTime = System.nanoTime();
                     }
                 }
                 // Decrement delta
