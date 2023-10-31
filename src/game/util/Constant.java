@@ -16,7 +16,7 @@ public class Constant {
 
     // ========== PLANET ========== \\
     public static String PLANET_IMG = "res/images/planets/planet00.png";
-    public static int PLANET_SIZE = 250;
+    public static int PLANET_SIZE = SCREEN_WIDTH / 12; // 250
 
     // ========== BULLET ========== \\
     public static String BULLET_IMG = "res/images/bullet.png";
