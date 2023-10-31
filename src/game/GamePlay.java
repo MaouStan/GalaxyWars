@@ -95,9 +95,9 @@ public class GamePlay extends JPanel implements Runnable {
         gameOver = false;
         isPause = false;
 
-        freezeTime = 0;
-        protectTime = 0;
-        automaticTime = 0;
+        freezeTime = 1;
+        protectTime = 1;
+        automaticTime = 1;
 
         automaticTimer = null;
         freezeTimer = null;

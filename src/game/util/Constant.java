@@ -33,7 +33,7 @@ public class Constant {
 
     // ========== PLAYER ========== \\
     public static String PLAYER_IMG = "res/images/player2.png";
-    public static String SHIELD_IMG = "res/images/shield.png";
+    public static String SHIELD_IMG = "res/images/shield2.png";
     public static final int PLAYER_WIDTH = 70;
     public static final int SHOOT_RATE = 10; // per sec
     public static final int PLAYER_HEIGHT = 79;
