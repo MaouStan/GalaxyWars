@@ -8,8 +8,8 @@ import javax.sound.sampled.Clip;
 
 public class Constant {
     // WINDOW GAME SETTINGS
-    public static final int SCREEN_WIDTH = 2560;
-    public static final int SCREEN_HEIGHT = 1600;
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1080;
     public static final int FRAME_RATE = 60;
     public static final long ENEMY_SPAWN_DELAY = 2500;
     public static boolean sound_state = true;
