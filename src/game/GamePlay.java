@@ -95,9 +95,9 @@ public class GamePlay extends JPanel implements Runnable {
         gameOver = false;
         isPause = false;
 
-        freezeTime = 9999;
-        protectTime = 9999;
-        automaticTime = 9999;
+        freezeTime = 0;
+        protectTime = 0;
+        automaticTime = 0;
 
         automaticTimer = null;
         freezeTimer = null;
@@ -107,7 +107,7 @@ public class GamePlay extends JPanel implements Runnable {
 
         score = 0;
 
-        level = 999;
+        level = 0;
         health = MAX_HEALTH;
         lastTimeMeteorSpawn = System.currentTimeMillis();
 

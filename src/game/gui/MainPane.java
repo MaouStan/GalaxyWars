@@ -90,11 +90,34 @@ public class MainPane extends JPanel {
         });
         background.add(startBtn);
 
+        // Setting
+        OutlineLabel settingBtn = new OutlineLabel("SETTING", 2);
+        settingBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
+        settingBtn.setForeground(Color.WHITE);
+        settingBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2, 200, 70);
+        settingBtn.setHorizontalAlignment(JLabel.CENTER);
+        settingBtn.setVerticalAlignment(JLabel.CENTER);
+        settingBtn.setOutlineColor(Color.BLACK);
+        settingBtn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                settingBtn.setFont(fRegular.deriveFont(Font.BOLD, 35));
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                settingBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
+            }
+
+            public void mouseClicked(MouseEvent evt) {
+                Frame.getInstance().changePanel(new SettingPane());
+            }
+        });
+        background.add(settingBtn);
+
         // Quit Button
         OutlineLabel quitBtn = new OutlineLabel("QUIT", 2);
         quitBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
         quitBtn.setForeground(Color.WHITE);
-        quitBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2, 200, 70);
+        quitBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 60, 200, 70);
         quitBtn.setHorizontalAlignment(JLabel.CENTER);
         quitBtn.setVerticalAlignment(JLabel.CENTER);
         quitBtn.setOutlineColor(Color.BLACK);

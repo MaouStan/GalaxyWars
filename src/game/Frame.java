@@ -16,9 +16,9 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setResizable(false);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // setExtendedState(JFrame.MAXIMIZED_BOTH);
         setIconImage(GAME_LOGO);
-        setUndecorated(true); // no header
+        // setUndecorated(true); // no header
 
         // set cursor
         setCursor(CUSTOM_CURSOR);
