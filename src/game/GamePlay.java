@@ -163,6 +163,9 @@ public class GamePlay extends JPanel implements Runnable {
         }
         // remove other components
         removeAll();
+        Frame.getInstance().removeKeyListener(keyHandler);
+        Frame.getInstance().removeMouseListener(mouseHandler);
+        Frame.getInstance().removeMouseMotionListener(mouseHandler);
     }
 
     public void gameOver() {
@@ -365,6 +368,11 @@ public class GamePlay extends JPanel implements Runnable {
                 freezeTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+
+                        if (inTimer || isPause) {
+                            return;
+                        }
+
                         freezeTime--;
                         if (freezeTime <= 0) {
                             freezeTimer.cancel();
@@ -372,6 +380,9 @@ public class GamePlay extends JPanel implements Runnable {
                         }
                     }
                 }, 0, 1);
+
+                // play sound
+                SoundManager.play(FREEZE_SOUND);
 
                 break;
 
@@ -387,6 +398,10 @@ public class GamePlay extends JPanel implements Runnable {
                 protectTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        if (inTimer || isPause) {
+                            return;
+                        }
+
                         protectTime--;
                         if (protectTime <= 0) {
                             protectTimer.cancel();
@@ -409,6 +424,10 @@ public class GamePlay extends JPanel implements Runnable {
                 automaticTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        if (inTimer || isPause) {
+                            return;
+                        }
+
                         automaticTime--;
                         if (automaticTime <= 0) {
                             automaticTimer.cancel();

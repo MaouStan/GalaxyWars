@@ -3,7 +3,6 @@ package game.gui;
 import javax.swing.*;
 
 import game.components.OutlineLabel;
-import game.util.SoundManager;
 import game.components.ItemShows;
 
 import java.awt.*;
@@ -15,10 +14,6 @@ import game.GamePlay;
 
 public class MainPane extends JPanel {
     public MainPane() {
-
-        Frame.getInstance().sound = new SoundManager(bgm1);
-        Frame.getInstance().sound.play(true);
-
         setLayout(null);
         // set Background Image
         JLabel background = new JLabel();
@@ -94,7 +89,7 @@ public class MainPane extends JPanel {
         OutlineLabel gameRuleBtn = new OutlineLabel("GameRule", 2);
         gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
         gameRuleBtn.setForeground(Color.WHITE);
-        gameRuleBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2, 300, 70);
+        gameRuleBtn.setBounds(SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2, 300, 70);
         gameRuleBtn.setHorizontalAlignment(JLabel.CENTER);
         gameRuleBtn.setVerticalAlignment(JLabel.CENTER);
         gameRuleBtn.setOutlineColor(Color.BLACK);

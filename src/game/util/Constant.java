@@ -31,7 +31,7 @@ public class Constant {
     public static int METEOR_MAX_SIZE = 200;
     public static int METEOR_SPEED = 1;
     public static final int MAX_COUNT_METEOR = 99;
-    public static final int METEOR_PER_LEVEL = 1;
+    public static int METEOR_PER_LEVEL = 20;
 
     // ========== PLAYER ========== \\
     public static String PLAYER_IMG = "res/images/player2.png";
@@ -39,7 +39,7 @@ public class Constant {
     public static final int PLAYER_WIDTH = 70;
     public static final int SHOOT_RATE = 10; // per sec
     public static final int PLAYER_HEIGHT = 79;
-    public static final int MAX_HEALTH = 5;
+    public static int MAX_HEALTH = 5;
 
     // ========== ITEM ========== \\
     public static int ITEM_SIZE = 50;
@@ -85,6 +85,7 @@ public class Constant {
     public static Clip DEAD_SOUND;
     public static Clip LEVEL_UP;
     public static Clip WINNER_SOUND;
+    public static Clip FREEZE_SOUND;
 
     // Cursor
     private final static String CURSOR_PATH = "res/images/crosshair.png";
@@ -113,6 +114,7 @@ public class Constant {
             SHOOT_SOUND = SoundManager.getClip("res/sounds/shoot.wav");
             COUNT_SOUND = SoundManager.getClip("res/sounds/count.wav");
             ITEM_COLLECT = SoundManager.getClip("res/sounds/pickup2.wav");
+            FREEZE_SOUND = SoundManager.getClip("res/sounds/freeze.wav");
 
             DEAD_SOUND = SoundManager.getClip("res/sounds/gameOver.wav");
             LEVEL_UP = SoundManager.getClip("res/sounds/levelUp.wav");
