@@ -2,3 +2,5 @@
 *.class
 **/bin
 *.class
+bin/game/gui/Nextlevel.class
+bin/game/gui/Nextlevel$1.class
