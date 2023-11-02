@@ -8,8 +8,8 @@ import javax.sound.sampled.Clip;
 
 public class Constant {
     // WINDOW GAME SETTINGS
-    public static final int SCREEN_WIDTH = 2560;
-    public static final int SCREEN_HEIGHT = 1600;
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1080;
     public static final int FRAME_RATE = 60;
     public static final long ENEMY_SPAWN_DELAY = 2500;
     public static boolean sound_state = true;
@@ -80,6 +80,7 @@ public class Constant {
     public static Clip BOOM_SOUND;
     public static Clip COUNT_SOUND;
     public static Clip ITEM_COLLECT;
+    public static Clip DEAD_SOUND;
 
     // Cursor
     private final static String CURSOR_PATH = "res/images/crosshair.png";
@@ -104,10 +105,12 @@ public class Constant {
             bgm1 = SoundManager.getClip("res/sounds/bgm1.wav");
             bgm2 = SoundManager.getClip("res/sounds/bgm2.wav");
 
-            BOOM_SOUND = SoundManager.getClip("res/sounds/gameOver.wav");
+            BOOM_SOUND = SoundManager.getClip("res/sounds/bomb.wav");
             SHOOT_SOUND = SoundManager.getClip("res/sounds/shoot.wav");
             COUNT_SOUND = SoundManager.getClip("res/sounds/count.wav");
             ITEM_COLLECT = SoundManager.getClip("res/sounds/pickup2.wav");
+
+            DEAD_SOUND = SoundManager.getClip("res/sounds/GameOver.wav");
 
             SOUND_ON = ImageManager.resizeImage("res/images/sound_on.png", 50, 50);
             SOUND_OFF = ImageManager.resizeImage("res/images/sound_off.png", 50, 50);

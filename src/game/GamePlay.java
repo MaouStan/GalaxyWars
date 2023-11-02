@@ -169,6 +169,7 @@ public class GamePlay extends JPanel implements Runnable {
 
     public void gameOver() {
         repaint();
+        SoundManager.play(DEAD_SOUND);
         gameOverPanel = new GameOverPanel(this);
         gameOverPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         add(gameOverPanel);
@@ -179,6 +180,7 @@ public class GamePlay extends JPanel implements Runnable {
     }
 
     public void restart() {
+
         stop();
         start();
     }
