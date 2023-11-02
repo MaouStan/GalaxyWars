@@ -14,6 +14,8 @@ public class Constant {
     public static final long ENEMY_SPAWN_DELAY = 2500;
     public static boolean sound_state = true;
 
+    public static String[] planets = FileManager.getFiles("res/images/planets/");
+
     // ========== PLANET ========== \\
     public static String PLANET_IMG = "res/images/planets/planet00.png";
     public static int PLANET_SIZE = SCREEN_WIDTH / 12; // 250
@@ -26,10 +28,10 @@ public class Constant {
     public static int BULLET_HEIGHT = 100;
 
     // ========== METEOR ========== \\
-    public static String METEOR_IMG = "res/images/meteor.png";
     public static int METEOR_MAX_SIZE = 200;
     public static int METEOR_SPEED = 1;
     public static final int MAX_COUNT_METEOR = 99;
+    public static final int METEOR_PER_LEVEL = 1;
 
     // ========== PLAYER ========== \\
     public static String PLAYER_IMG = "res/images/player2.png";
@@ -81,6 +83,8 @@ public class Constant {
     public static Clip COUNT_SOUND;
     public static Clip ITEM_COLLECT;
     public static Clip DEAD_SOUND;
+    public static Clip LEVEL_UP;
+    public static Clip WINNER_SOUND;
 
     // Cursor
     private final static String CURSOR_PATH = "res/images/crosshair.png";
@@ -110,7 +114,9 @@ public class Constant {
             COUNT_SOUND = SoundManager.getClip("res/sounds/count.wav");
             ITEM_COLLECT = SoundManager.getClip("res/sounds/pickup2.wav");
 
-            DEAD_SOUND = SoundManager.getClip("res/sounds/GameOver.wav");
+            DEAD_SOUND = SoundManager.getClip("res/sounds/gameOver.wav");
+            LEVEL_UP = SoundManager.getClip("res/sounds/levelUp.wav");
+            WINNER_SOUND = SoundManager.getClip("res/sounds/winner.wav");
 
             SOUND_ON = ImageManager.resizeImage("res/images/sound_on.png", 50, 50);
             SOUND_OFF = ImageManager.resizeImage("res/images/sound_off.png", 50, 50);

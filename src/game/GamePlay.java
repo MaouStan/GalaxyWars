@@ -9,6 +9,7 @@ import game.entity.Meteor;
 import game.entity.Planet;
 import game.entity.Player;
 import game.gui.GameOverPanel;
+import game.gui.NextLevel;
 import game.gui.PausePanel;
 import game.util.SoundManager;
 import game.item.Item;
@@ -30,6 +31,7 @@ public class GamePlay extends JPanel implements Runnable {
     private int level;
     private int spawnedMeteor;
     private int amountMeteorEnough;
+    private int maxMeteorLevel;
     private long lastTimeMeteorSpawn;
     private long nextDelaySpawn;
     private Timer timer;
@@ -46,20 +48,14 @@ public class GamePlay extends JPanel implements Runnable {
     Timer freezeTimer;
     Timer protectTimer;
 
-    // PLANET
+    // Object
     private int health;
     private Planet planet;
-
-    // Player
     private Player player;
 
-    // Bullet
+    // List
     private ArrayList<Bullet> bullets;
-
-    // Meteor
     private ArrayList<Meteor> meteors;
-
-    // Item
     private ArrayList<Item> items;
 
     // Controller
@@ -95,9 +91,9 @@ public class GamePlay extends JPanel implements Runnable {
         gameOver = false;
         isPause = false;
 
-        freezeTime = 1;
-        protectTime = 1;
-        automaticTime = 1;
+        freezeTime = 0;
+        protectTime = 0;
+        automaticTime = 0;
 
         automaticTimer = null;
         freezeTimer = null;
@@ -112,7 +108,8 @@ public class GamePlay extends JPanel implements Runnable {
         lastTimeMeteorSpawn = System.currentTimeMillis();
 
         spawnedMeteor = 0;
-        amountMeteorEnough = Math.min(MAX_COUNT_METEOR, level * 5);
+        maxMeteorLevel = METEOR_PER_LEVEL * level;
+        amountMeteorEnough = maxMeteorLevel;
         nextDelaySpawn = 0;
 
         planet = new Planet(this);
@@ -146,7 +143,8 @@ public class GamePlay extends JPanel implements Runnable {
             @Override
             public void run() {
                 level++;
-                amountMeteorEnough = Math.min(MAX_COUNT_METEOR, level * 5);
+                maxMeteorLevel = METEOR_PER_LEVEL * level;
+                amountMeteorEnough = maxMeteorLevel;
                 spawnedMeteor = 0;
                 nextDelaySpawn = random(100, ENEMY_SPAWN_DELAY);
                 METEOR_SPEED = Math.min(level, 5);
@@ -265,12 +263,12 @@ public class GamePlay extends JPanel implements Runnable {
             }
         }
 
-        if (spawnedMeteor == Math.min(MAX_COUNT_METEOR, level * 5) && meteors.size() == 0) {
+        if (spawnedMeteor == maxMeteorLevel && meteors.size() == 0) {
             amountMeteorEnough = 0;
         }
 
         // spawn ENEMY_SPAWN_DELAY
-        if (System.currentTimeMillis() - lastTimeMeteorSpawn > nextDelaySpawn && spawnedMeteor < level * 5
+        if (System.currentTimeMillis() - lastTimeMeteorSpawn > nextDelaySpawn && spawnedMeteor < maxMeteorLevel
                 && spawnedMeteor < MAX_COUNT_METEOR) {
             lastTimeMeteorSpawn = System.currentTimeMillis();
             meteors.add(new Meteor(this));
@@ -279,24 +277,47 @@ public class GamePlay extends JPanel implements Runnable {
         }
 
         // level up
-        if (level != 0 && spawnedMeteor == Math.min(MAX_COUNT_METEOR, level * 5)
-                && amountMeteorEnough <= 0) {
-
+        if (level != 0 && spawnedMeteor == maxMeteorLevel && amountMeteorEnough <= 0) {
             if (!inTimer) {
                 inTimer = true;
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        NextLevel nextLevel = new NextLevel(GamePlay.this);
+                        nextLevel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+                        add(nextLevel);
+
+                        // play Sound
+                        SoundManager.play(LEVEL_UP);
+
+                        while (nextLevel.isRunning()) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        remove(nextLevel);
+
+                        // delay 1 sec
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         level++;
-                        amountMeteorEnough = Math.min(MAX_COUNT_METEOR, level * 5);
+                        maxMeteorLevel = METEOR_PER_LEVEL * level;
+                        amountMeteorEnough = maxMeteorLevel;
                         spawnedMeteor = 0;
                         nextDelaySpawn = random(100, ENEMY_SPAWN_DELAY);
                         METEOR_SPEED = Math.min(level, 5);
                         timer.cancel();
                         inTimer = false;
                     }
-                }, 2000, 2000);
+                }, 2000);
             }
         }
 
@@ -492,7 +513,8 @@ public class GamePlay extends JPanel implements Runnable {
         // Enemy Count size / max
         graphics2d.setColor(Color.white);
         graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
-        String enemyString = String.format("%02d / %02d", amountMeteorEnough, Math.min(MAX_COUNT_METEOR, level * 5));
+        String enemyString = String.format("%02d / %02d", amountMeteorEnough,
+                maxMeteorLevel);
         int enemyWidth = graphics2d.getFontMetrics().stringWidth(enemyString);
         graphics2d.drawString(enemyString, SCREEN_WIDTH - enemyWidth - 50, 100);
 
