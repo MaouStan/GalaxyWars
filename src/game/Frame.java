@@ -2,6 +2,7 @@ package game;
 
 import javax.swing.*;
 
+import game.gui.GameRulePane;
 import game.util.SoundManager;
 
 import java.awt.Dimension;

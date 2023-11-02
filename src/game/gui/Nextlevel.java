@@ -22,7 +22,6 @@ public class NextLevel extends JPanel {
     private Timer timer;
     private long startTime;
     private boolean isRunning;
-    private int lineLength;
 
     GamePlay gp;
 
@@ -37,10 +36,9 @@ public class NextLevel extends JPanel {
         setBackground(new Color(0, 0, 0, 125));
 
         LOGO = ImageManager.resizeImage("res/images/nextlevelxx.Wpng.png", PLANET_SIZE * 2, PLANET_SIZE * 2);
-        SPACE = ImageManager.resizeImage("res/images/player-next.png", PLAYER_WIDTH, PLAYER_HEIGHT);
+        SPACE = ImageManager.resizeImage("res/images/player-next.png", PLAYER_WIDTH * 2, PLAYER_HEIGHT);
 
         spaceX = -SPACE.getWidth();
-        lineLength = 0;
 
         Timer delayTimer = new Timer(1000, new ActionListener() {
             @Override
@@ -53,28 +51,42 @@ public class NextLevel extends JPanel {
         delayTimer.start();
 
         timer = new Timer(1000 / 60, new ActionListener() {
+            // Inside the actionPerformed method of the 'timer':
             @Override
             public void actionPerformed(ActionEvent e) {
                 long elapsedTime = System.currentTimeMillis() - startTime;
-                double progress = elapsedTime / 5000.0; // 5 seconds = 5000 milliseconds
+                double progress = (double) elapsedTime / 6000.0;
 
-                if (progress < 0.4) {
-                    // First phase: move to center over 2 seconds
-                    spaceX = (int) (-SPACE.getWidth() + progress * 2.5 * (getWidth() / 2 + SPACE.getWidth() / 2));
-                } else if (progress < 0.6) {
-                    // Second phase: pause at center for 1 second
-                    spaceX = (getWidth() - SPACE.getWidth()) / 2;
+                Graphics g = getGraphics();
+                g.setFont(fSemiBold.deriveFont(Font.BOLD, 40f));
+                FontMetrics fm = g.getFontMetrics();
+                int stringWidth = fm.stringWidth("Next Level");
+                int nPos = getWidth() / 2 - stringWidth / 2 - SPACE.getWidth() / 2;
+                int lPos = getWidth() / 2 + stringWidth / 2 + SPACE.getWidth() / 2;
+
+                if (progress < 0.25) {
+                    // First phase: spaceX move to 'N' in 1.5 seconds
+                    // Calculate the intermediate position for 'N' based on progress
+                    spaceX = (int) (nPos * (4 * progress));
+                } else if (progress < 0.75) {
+                    // Second phase: spaceX move slowly to 'L' in 3 seconds with easing
+                    double phaseProgress = (progress - 0.25) / 0.5; // Normalize the progress to [0, 1]
+                    double easedProgress = 0.5 * (1.0 - Math.cos(phaseProgress * Math.PI)); // Apply ease-in-out easing
+                    // Calculate the intermediate position for 'L' based on eased progress
+                    spaceX = (int) (nPos + (lPos - nPos) * easedProgress);
                 } else {
-                    // Third phase: move to end over 2 seconds
-                    spaceX = (int) ((getWidth() - SPACE.getWidth()) / 2
-                            + (progress - 0.6) * 2.5 * (getWidth() / 2 + SPACE.getWidth() / 2));
+                    // Third phase: spaceX move to end in 3 seconds
+                    // Calculate the intermediate position for the end based on progress
+                    spaceX = (int) (lPos + (getWidth() - lPos) * (4 * (progress - 0.75)));
                 }
+
                 if (progress >= 1.0) {
                     timer.stop();
                     isRunning = false;
                 }
                 repaint();
             }
+
         });
     }
 

@@ -22,7 +22,7 @@ public class Player extends Entity {
     Timer timer;
 
     public Player(GamePlay gp) {
-        super(-PLAYER_WIDTH / 2, -PLAYER_HEIGHT * 2 - 50,
+        super(-PLAYER_WIDTH / 2, -PLAYER_HEIGHT * 2,
                 ImageManager.resizeImage(PLAYER_IMG, PLAYER_WIDTH, PLAYER_HEIGHT));
         deg = 0;
         this.gp = gp;
