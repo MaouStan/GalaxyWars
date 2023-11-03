@@ -98,6 +98,7 @@ public class GameRulePane extends JPanel {
             Frame.getInstance().requestFocusInWindow();
         });
         background.add(slider);
+
     }
 
 }
