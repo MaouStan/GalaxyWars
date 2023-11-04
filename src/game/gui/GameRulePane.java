@@ -21,7 +21,6 @@ public class GameRulePane extends JPanel {
         Frame.getInstance().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e);
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     Frame.getInstance().changePanel(new MainPane());
                     Frame.getInstance().clearEvent();
@@ -90,7 +89,7 @@ public class GameRulePane extends JPanel {
             METEOR_PER_LEVEL = diff * 4;
 
             if (diff > 5) {
-                MAX_HEALTH = Math.max(3, diff - 5);
+                MAX_HEALTH = Math.max(3, 5 - (diff - 5));
             } else {
                 MAX_HEALTH = diff + 5;
             }
@@ -100,5 +99,4 @@ public class GameRulePane extends JPanel {
         background.add(slider);
 
     }
-
 }
