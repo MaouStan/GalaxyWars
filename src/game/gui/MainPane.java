@@ -3,7 +3,6 @@ package game.gui;
 import javax.swing.*;
 
 import game.components.OutlineLabel;
-import game.util.SoundManager;
 import game.components.ItemShows;
 
 import java.awt.*;
@@ -15,10 +14,6 @@ import game.GamePlay;
 
 public class MainPane extends JPanel {
     public MainPane() {
-
-        Frame.getInstance().sound = new SoundManager(bgm1);
-        Frame.getInstance().sound.play(true);
-
         setLayout(null);
         // set Background Image
         JLabel background = new JLabel();
@@ -90,8 +85,31 @@ public class MainPane extends JPanel {
         });
         background.add(startBtn);
 
-        // Setting
-        OutlineLabel settingBtn = new OutlineLabel("SETTING", 2);
+        // gameRule
+        // OutlineLabel gameRuleBtn = new OutlineLabel("GameRule Setting", 2);
+        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
+        // gameRuleBtn.setForeground(Color.WHITE);
+        // gameRuleBtn.setBounds(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2, 400, 70);
+        // gameRuleBtn.setHorizontalAlignment(JLabel.CENTER);
+        // gameRuleBtn.setVerticalAlignment(JLabel.CENTER);
+        // gameRuleBtn.setOutlineColor(Color.BLACK);
+        // gameRuleBtn.addMouseListener(new MouseAdapter() {
+        // public void mouseEntered(MouseEvent evt) {
+        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 35));
+        // }
+
+        // public void mouseExited(MouseEvent evt) {
+        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
+        // }
+
+        // public void mouseClicked(MouseEvent evt) {
+        // Frame.getInstance().changePanel(new GameRulePane());
+        // }
+        // });
+        // background.add(gameRuleBtn);
+
+        // setting
+        OutlineLabel settingBtn = new OutlineLabel("Setting", 2);
         settingBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
         settingBtn.setForeground(Color.WHITE);
         settingBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2, 200, 70);

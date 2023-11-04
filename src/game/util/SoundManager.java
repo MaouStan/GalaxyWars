@@ -1,13 +1,12 @@
 package game.util;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 
 import java.io.File;
 
 public class SoundManager {
     private Clip clip;
+    private static float volume = 100.0f; // volume in decibels percent
 
     public SoundManager(Clip clip) {
         this.clip = clip;
@@ -18,6 +17,7 @@ public class SoundManager {
     }
 
     public void play(boolean loop) {
+        setVolumeToSound(this.clip);
         this.clip.setFramePosition(0);
         this.clip.start();
         this.clip.loop(loop ? Clip.LOOP_CONTINUOUSLY : 0);
@@ -28,8 +28,23 @@ public class SoundManager {
     }
 
     public static void play(Clip clip) {
+        setVolumeToSound(clip);
         clip.setFramePosition(0);
         clip.start();
+    }
+
+    private static void setVolumeToSound(Clip clip) {
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        float dB = (float) (Math.log(volume / 100.0) / Math.log(10.0) * 20.0);
+        gainControl.setValue(dB);
+    }
+
+    public static void setVolumeNumber(float volume) {
+        SoundManager.volume = volume;
+    }
+
+    public static float getVolumeNumber() {
+        return SoundManager.volume;
     }
 
     public static Clip getClip(String filename) {

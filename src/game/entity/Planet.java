@@ -21,7 +21,7 @@ public class Planet extends Entity {
 
         this.gp = gp;
 
-        imageShield = ImageManager.resizeImage(SHIELD_IMG, PLANET_SIZE + 30, PLANET_SIZE + 30);
+        imageShield = ImageManager.resizeImage(SHIELD_IMG, PLANET_SIZE + 100, PLANET_SIZE + 100);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Planet extends Entity {
         g2d2.dispose();
 
         if (gp.isProtected()) {
-            g2d.drawImage(imageShield, x - 15, y - 15, null);
+            g2d.drawImage(imageShield, x - 50, y - 45, null);
         }
 
         // draw hit box

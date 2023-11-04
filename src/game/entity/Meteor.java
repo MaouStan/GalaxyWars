@@ -62,7 +62,13 @@ public class Meteor extends Entity {
         int width = (int) (METEOR_MAX_SIZE / size);
         int height = (int) (METEOR_MAX_SIZE / size);
 
-        image = ImageManager.resizeImage("res/images/meteor.png", width, height);
+        // random Meteor != PLANET_IMG
+        String imageStr = planets[random(0, planets.length - 1)];
+        while (imageStr.equals(PLANET_IMG)) {
+            imageStr = planets[random(0, planets.length - 1)];
+        }
+
+        image = ImageManager.resizeImage(imageStr, width, height);
 
         // speed
         speed = random(5, 20) / 10f;

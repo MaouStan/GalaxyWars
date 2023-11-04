@@ -2,101 +2,122 @@ package game.gui;
 
 import javax.swing.*;
 
-import static game.util.Constant.BG2;
-import static game.util.Constant.fBold;
+import game.GamePlay;
+import game.util.ImageManager;
+
+import static game.util.Constant.PLANET_SIZE;
+import static game.util.Constant.PLAYER_HEIGHT;
+import static game.util.Constant.PLAYER_WIDTH;
+import static game.util.Constant.fSemiBold;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-public class Nextlevel extends JPanel {
-    private static final int PANEL_WIDTH = 1960;
-    private static final int PANEL_HEIGHT = 1080;
-    private static final int TEXT_WIDTH = 20;
-    private BufferedImage image;
-    private BufferedImage image1;
-
-    private int textX = -TEXT_WIDTH;
+public class NextLevel extends JPanel {
+    private BufferedImage LOGO;
+    private BufferedImage SPACE;
+    private int spaceX;
     private Timer timer;
-    private boolean slowingDown = false; // เพิ่มตัวแปรเพื่อแสดงถึงความช้าลง
+    private long startTime;
+    private boolean isRunning;
 
-    public Nextlevel() {
-        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+    GamePlay gp;
+
+    public NextLevel(GamePlay gp) {
+        this.gp = gp;
+
+        isRunning = true;
+
         setLayout(null);
-        setBounds(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+        setBounds(0, 0, gp.getWidth(), gp.getHeight());
         setOpaque(false);
         setBackground(new Color(0, 0, 0, 125));
-         // no header
 
-        try {
-            // โหลดรูปภาพจากไฟล์
-            image1 = ImageIO.read(new File("res/images/nextlevelxx.Wpng.png"));
-            image = ImageIO.read(new File("res/images/player-next.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LOGO = ImageManager.resizeImage("res/images/nextlevelxx.Wpng.png", PLANET_SIZE * 2, PLANET_SIZE * 2);
+        SPACE = ImageManager.resizeImage("res/images/player-next.png", PLAYER_WIDTH * 2, PLAYER_HEIGHT);
 
-        timer = new Timer(10, new ActionListener() {
+        spaceX = -SPACE.getWidth();
+
+        Timer delayTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!slowingDown) {
-                    textX += 20;
-                    if (textX + 48 * 4 + 170 >= (PANEL_WIDTH / 2)) {
-                        slowingDown = true; // เมื่อถึงกลางจอกลับเริ่มช้าลง
-                    }
+                startTime = System.currentTimeMillis();
+                timer.start();
+            }
+        });
+        delayTimer.setRepeats(false); // Make the timer only fire once
+        delayTimer.start();
+
+        timer = new Timer(1000 / 60, new ActionListener() {
+            // Inside the actionPerformed method of the 'timer':
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                double progress = (double) elapsedTime / 6000.0;
+
+                Graphics g = getGraphics();
+                g.setFont(fSemiBold.deriveFont(Font.BOLD, 40f));
+                FontMetrics fm = g.getFontMetrics();
+                int stringWidth = fm.stringWidth("Next Level");
+                int nPos = getWidth() / 2 - stringWidth / 2 - SPACE.getWidth() / 2;
+                int lPos = getWidth() / 2 + stringWidth / 2 + SPACE.getWidth() / 2;
+
+                if (progress < 0.25) {
+                    // First phase: spaceX move to 'N' in 1.5 seconds
+                    // Calculate the intermediate position for 'N' based on progress
+                    spaceX = (int) (nPos * (8 * progress));
+                } else if (progress < 0.75) {
+                    // Second phase: spaceX move slowly to 'L' in 3 seconds with easing
+                    double phaseProgress = (progress - 0.25) / 0.5; // Normalize the progress to [0, 1]
+                    double easedProgress = 0.5 * (1.0 - Math.cos(phaseProgress * Math.PI)); // Apply ease-in-out easing
+                    // Calculate the intermediate position for 'L' based on eased progress
+                    spaceX = (int) (nPos + (lPos - nPos) * easedProgress);
                 } else {
-                    textX += 1;
-                    if (textX > PANEL_WIDTH / 2 - 230) {
-                        slowingDown = false; // เมื่อกลับไปความเร็วปกติ
-                    }
-                    if (textX > PANEL_WIDTH) {
-                        textX = -TEXT_WIDTH;
-                    }
+                    // Third phase: spaceX move to end in 3 seconds
+                    // Calculate the intermediate position for the end based on progress
+                    spaceX = (int) (lPos + (getWidth() - lPos) * (8 * (progress - 0.75)));
+                }
+
+                if (progress >= 1.0) {
+                    timer.stop();
+                    isRunning = false;
                 }
                 repaint();
             }
-        });
-        timer.start();
 
+        });
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(BG2,0,0, getWidth(), getHeight(), null);
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        Font textFont = new Font("SansSerif", Font.BOLD, 98); // Set the font
-        Color textColor = Color.WHITE; // Set the text color
+        // Draw image center
+        g.drawImage(LOGO, getWidth() / 2 - LOGO.getWidth() / 2, getHeight() / 2 - (LOGO.getHeight() / 2) * 2,
+                null);
 
-        int textY = getHeight() / 2 - 48;
+        // Draw String "Next Level" center
         g.setColor(Color.white);
-        g.setFont(fBold.deriveFont(Font.BOLD, 72f));
-        
-        String textWidth = "Next Level";
-        int Nextwidth = g.getFontMetrics().stringWidth(textWidth);
-        
-        // Draw the image at the same position as the text
-        if (image != null) {
-            g.drawImage(image1, getWidth()/2 - image1.getWidth()/2, getHeight()/2-420, null);
-            g.drawImage(image, textX+Nextwidth/2 - image.getWidth()/2, textY+60, this);
-        }
-        
-        g.drawString("Next Level", getWidth()/2-Nextwidth/2 , getHeight()/2-120);
+        g.setFont(fSemiBold.deriveFont(Font.BOLD, 40f));
+        // calc String Width
+        int width = g.getFontMetrics().stringWidth("Next Level");
+        g.drawString("Next Level", getWidth() / 2 - width / 2, getHeight() / 2);
+
+        // Draw image
+        g.drawImage(SPACE, spaceX - SPACE.getWidth() / 2, getHeight() / 2 + (SPACE.getHeight() / 2) * 2,
+                null);
+
+        // Draw Line trail width of SPACE
+        g.setColor(Color.white);
+        g.fillRect(0, getHeight() / 2 + (SPACE.getHeight() / 2) * 3, spaceX - SPACE.getWidth() / 2, 5);
+
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Text Scrolling Demo");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(new Nextlevel());
-            frame.pack();
-            frame.setVisible(true);
-        });
+    public boolean isRunning() {
+        return isRunning;
     }
 }

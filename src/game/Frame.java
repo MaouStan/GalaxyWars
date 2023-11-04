@@ -5,6 +5,10 @@ import javax.swing.*;
 import game.util.SoundManager;
 
 import java.awt.Dimension;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
 import static game.util.Constant.*;
 
 public class Frame extends JFrame {
@@ -16,7 +20,7 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setResizable(false);
-        // setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // fullScreen
         setIconImage(GAME_LOGO);
         setUndecorated(true); // no header
 
@@ -39,6 +43,23 @@ public class Frame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public void clearEvent() {
+        KeyListener[] key1 = getKeyListeners();
+        for (KeyListener k : key1) {
+            removeKeyListener(k);
+        }
+
+        MouseListener[] mouse1 = getMouseListeners();
+        for (MouseListener m : mouse1) {
+            removeMouseListener(m);
+        }
+
+        MouseMotionListener[] mouse2 = getMouseMotionListeners();
+        for (MouseMotionListener m : mouse2) {
+            removeMouseMotionListener(m);
+        }
     }
 
     public class getInstance {
