@@ -64,13 +64,13 @@ public class NextLevel extends JPanel {
                 int nPos = getWidth() / 2 - stringWidth / 2 - SPACE.getWidth() / 2;
                 int lPos = getWidth() / 2 + stringWidth / 2 + SPACE.getWidth() / 2;
 
-                if (progress < 0.25) {
+                if (progress < 0.125) {
                     // First phase: spaceX move to 'N' in 1.5 seconds
                     // Calculate the intermediate position for 'N' based on progress
                     spaceX = (int) (nPos * (8 * progress));
                 } else if (progress < 0.75) {
                     // Second phase: spaceX move slowly to 'L' in 3 seconds with easing
-                    double phaseProgress = (progress - 0.25) / 0.5; // Normalize the progress to [0, 1]
+                    double phaseProgress = (progress - 0.125) / 0.5; // Normalize the progress to [0, 1]
                     double easedProgress = 0.5 * (1.0 - Math.cos(phaseProgress * Math.PI)); // Apply ease-in-out easing
                     // Calculate the intermediate position for 'L' based on eased progress
                     spaceX = (int) (nPos + (lPos - nPos) * easedProgress);
