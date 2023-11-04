@@ -1,16 +1,25 @@
 package game.gui;
 
 import static game.util.Constant.BG2;
+import static game.util.Constant.SCREEN_WIDTH;
+import static game.util.Constant.SOUND_OFF;
+import static game.util.Constant.SOUND_ON;
 import static game.util.Constant.fBold;
+import static game.util.Constant.sound_state;
 
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import game.Frame;
 
 public class EndGame extends JPanel {
 
@@ -50,10 +59,10 @@ public class EndGame extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // เลื่อนรูปภาพและข้อความขึ้นไป
                 if (imageY > PANEL_HEIGHT / 2 - 420) {
-                    imageY -= 1;
+                    imageY -= 5;
                 }
                 if (textY > PANEL_HEIGHT / 2 - 120) {
-                    textY -= 1;
+                    textY -= 5;
                 }
                 repaint(); // อัปเดตหน้าจอ
             }
@@ -70,7 +79,7 @@ public class EndGame extends JPanel {
 
         if (image1 != null) {
             // วาดรูปภาพและข้อความในตำแหน่งที่กำหนด
-            g.drawImage(image1, imageX, imageY - 110, null);
+            g.drawImage(image1, imageX, textY - 320 - image1.getHeight()/2, null);
         }
 
         Font textFont = new Font("SansSerif", Font.BOLD, 98);
@@ -78,15 +87,34 @@ public class EndGame extends JPanel {
         g.setColor(Color.WHITE);
         g.setFont(fBold.deriveFont(Font.BOLD, 98f)); // ปรับให้เป็นตามขนาดจอด้วย
         g.drawString("Victory Galaxy Wars", PANEL_WIDTH / 2 - g.getFontMetrics().stringWidth("Victory Galaxy Wars") / 2,
-                textY - 150);
+        textY - 150);
 
         g.setFont(fBold.deriveFont(Font.BOLD, 48f)); // ปรับให้เป็นตามขนาดจอด้วย
         g.drawString("----------------- Developer -----------------",
-                PANEL_WIDTH / 2 - g.getFontMetrics().stringWidth("----------------- Developer -----------------") / 2,
-                textY - 70);
-
+        PANEL_WIDTH / 2 - g.getFontMetrics().stringWidth("----------------- Developer -----------------") / 2,
+        textY - 70);
+        
         Font DeveloperFont = fBold.deriveFont(Font.BOLD, 32f); // 48 เป็นขนาดตัวหนังสือ
         g.setFont(DeveloperFont);
+        if (textY == 420) {
+                 JLabel backButton = new JLabel();
+        backButton.setIcon(new ImageIcon());
+        backButton.setBounds(SCREEN_WIDTH - 100, 25, 50, 50);
+        backButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                
+            }
+        });
+        backButton.setHorizontalAlignment(JLabel.CENTER);
+        backButton.setVerticalAlignment(JLabel.CENTER);
+        add(backButton);
+                g.drawString("Score : ", 20,
+                        textY + 500 );
+                g.drawString("Time : ", 20,
+                        textY + 550 );
+                g.drawString("Mon : ", 20,
+                        textY + 600 );
+        }
         g.drawString("65011212112 Phothiphong Meethonglang : Code and Desgin",
                 PANEL_WIDTH / 2 - 30
                         - g.getFontMetrics().stringWidth("65011212178 Nitipong Boonprasert : Code and Desgin") / 2,
@@ -117,7 +145,6 @@ public class EndGame extends JPanel {
                 PANEL_WIDTH / 2 - 30
                         - g.getFontMetrics().stringWidth("Natthariya Laopracha") / 2,
                 textY + 420);
-        g.setFont(DeveloperFont);
         g.drawString("Object Oriented Programming 1204203",
                 PANEL_WIDTH / 2 - 30
                         - g.getFontMetrics().stringWidth("Object Oriented Programming 1204203") / 2,
