@@ -505,7 +505,6 @@ public class GamePlay extends JPanel implements Runnable {
 
         // effectTime
         graphics2d.setColor(Color.white);
-        graphics2d.setFont(fSemiBold.deriveFont(Font.BOLD, 30f));
 
         if (isFreeze()) {
             // drawTime
