@@ -20,13 +20,17 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import game.Frame;
+import game.util.ImageManager;
 
 public class EndGame extends JPanel {
 
     private static final int PANEL_WIDTH = 1960;
     private static final int PANEL_HEIGHT = 1080;
-    private BufferedImage image;
+    private BufferedImage Time;
+    private BufferedImage Score;
+    private BufferedImage Kill;
     private BufferedImage image1;
+    private BufferedImage Iconwin;
 
     private int imageX; // ตำแหน่งในแกน X ของรูปภาพ
     private int imageY; // ตำแหน่งในแกน Y ของรูปภาพ
@@ -42,27 +46,27 @@ public class EndGame extends JPanel {
         setOpaque(false);
         setBackground(new Color(0, 0, 0, 125));
 
-        try {
-            image1 = ImageIO.read(new File("res/images/nextlevelxx.Wpng.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        image1 = ImageManager.load("res/images/nextlevelxx.Wpng.png");
+        Iconwin = ImageManager.resizeImage("res/images/iconwin.png", 450, 450);
+        Score = ImageManager.resizeImage("res/images/Score2.png", 300, 300);
+        Time = ImageManager.resizeImage("res/images/Time.png", 300, 300);
+        Kill = ImageManager.resizeImage("res/images/Kill.png", 300, 300);
 
         // ตำแหน่งเริ่มต้นของรูปภาพและข้อความ
         imageX = PANEL_WIDTH / 2 - image1.getWidth() / 2;
         imageY = PANEL_HEIGHT;
         textX = PANEL_WIDTH / 2;
-        textY = PANEL_HEIGHT;
+        textY = PANEL_HEIGHT + 1500;
 
         timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // เลื่อนรูปภาพและข้อความขึ้นไป
                 if (imageY > PANEL_HEIGHT / 2 - 420) {
-                    imageY -= 5;
+                    imageY -= 1;
                 }
                 if (textY > PANEL_HEIGHT / 2 - 120) {
-                    textY -= 5;
+                    textY -= 1; 
                 }
                 repaint(); // อัปเดตหน้าจอ
             }
@@ -79,6 +83,10 @@ public class EndGame extends JPanel {
 
         if (image1 != null) {
             // วาดรูปภาพและข้อความในตำแหน่งที่กำหนด
+            g.drawImage(Iconwin, imageX - 100, textY - 1330 - Iconwin.getHeight()/2, null);
+            g.drawImage(Score, imageX - 500, textY - 960 - image1.getHeight()/2, null);
+            g.drawImage(Time, imageX - 30, textY - 960 - image1.getHeight()/2, null);
+            g.drawImage(Kill, imageX + 450, textY - 960 - image1.getHeight()/2, null);
             g.drawImage(image1, imageX, textY - 320 - image1.getHeight()/2, null);
         }
 
@@ -87,7 +95,14 @@ public class EndGame extends JPanel {
         g.setColor(Color.WHITE);
         g.setFont(fBold.deriveFont(Font.BOLD, 98f)); // ปรับให้เป็นตามขนาดจอด้วย
         g.drawString("Victory Galaxy Wars", PANEL_WIDTH / 2 - g.getFontMetrics().stringWidth("Victory Galaxy Wars") / 2,
-        textY - 150);
+        textY - 1080);
+        g.setFont(fBold.deriveFont(Font.BOLD, 42f));
+        g.drawString("Score : 1,200", PANEL_WIDTH / 2 - 580,textY - 730);
+        g.drawString("Time : 00:04:00", PANEL_WIDTH / 2 - 100,textY - 730);
+        g.drawString("Kill : 500", PANEL_WIDTH / 2 + 350,textY - 730);
+        g.setFont(fBold.deriveFont(Font.BOLD, 98f)); // ปรับให้เป็นตามขนาดจอด้วย
+        g.drawString("Galaxy Wars", PANEL_WIDTH / 2 - g.getFontMetrics().stringWidth("Galaxy Wars") / 2,
+        textY - 160);
 
         g.setFont(fBold.deriveFont(Font.BOLD, 48f)); // ปรับให้เป็นตามขนาดจอด้วย
         g.drawString("----------------- Developer -----------------",
@@ -96,26 +111,31 @@ public class EndGame extends JPanel {
         
         Font DeveloperFont = fBold.deriveFont(Font.BOLD, 32f); // 48 เป็นขนาดตัวหนังสือ
         g.setFont(DeveloperFont);
+        System.out.println(textY);
         if (textY == 420) {
-                 JLabel backButton = new JLabel();
-        backButton.setIcon(new ImageIcon());
-        backButton.setBounds(SCREEN_WIDTH - 100, 25, 50, 50);
+                 JLabel backButton = new JLabel("Back to menu");
+                 backButton.setFont(DeveloperFont);
+                 backButton.setForeground(Color.WHITE);
+        backButton.setIcon(new ImageIcon(ImageManager.resizeImage("res/images/arrow_back.png",50,50,180)));
+        backButton.setBounds(5, textY + 280 , 300, 300);
         backButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                
+
             }
         });
-        backButton.setHorizontalAlignment(JLabel.CENTER);
         backButton.setVerticalAlignment(JLabel.CENTER);
+        backButton.setHorizontalAlignment(JLabel.CENTER);
         add(backButton);
-                g.drawString("Score : ", 20,
+                // g.drawString("Back to menu", 62,
+                //         textY + 447 );
+                g.drawString("Score : 1,200", 20,
                         textY + 500 );
-                g.drawString("Time : ", 20,
+                g.drawString("Time : 00:04:00", 20,
                         textY + 550 );
-                g.drawString("Mon : ", 20,
+                g.drawString("Kill : 500", 20,
                         textY + 600 );
         }
-        g.drawString("65011212112 Phothiphong Meethonglang : Code and Desgin",
+        g.drawString("65011212122 Phothiphong Meethonglang : Code and Desgin",
                 PANEL_WIDTH / 2 - 30
                         - g.getFontMetrics().stringWidth("65011212178 Nitipong Boonprasert : Code and Desgin") / 2,
                 textY);
@@ -131,7 +151,7 @@ public class EndGame extends JPanel {
                 PANEL_WIDTH / 2 - 30
                         - g.getFontMetrics().stringWidth("65011212178 Nitipong Boonprasert : Code and Desgin") / 2,
                 textY + 210);
-        g.drawString("65011212048 Wiritphon Worawatthanakul : Sound and Assets",
+        g.drawString("65011212132 Wiritphon DuangDusan : Sound and Assets",
                 PANEL_WIDTH / 2 - 30
                         - g.getFontMetrics().stringWidth("65011212178 Nitipong Boonprasert : Code and Desgin") / 2,
                 textY + 280);
