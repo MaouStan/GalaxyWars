@@ -8,6 +8,7 @@ import game.entity.Bullet;
 import game.entity.Meteor;
 import game.entity.Planet;
 import game.entity.Player;
+import game.gui.EndGame;
 import game.gui.GameOverPanel;
 import game.gui.NextLevel;
 import game.gui.PausePanel;
@@ -152,7 +153,7 @@ public class GamePlay extends JPanel implements Runnable {
                 inTimer = false;
                 seconds = 0;
             }
-        }, 3500, 3500);
+        }, 3500);
 
         thread.start();
     }
@@ -287,6 +288,13 @@ public class GamePlay extends JPanel implements Runnable {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+
+                        if (isFinished()) {
+                            Frame.getInstance().changePanel(new EndGame(GamePlay.this));
+                            timer.cancel();
+                            return;
+                        }
+
                         NextLevel nextLevel = new NextLevel(GamePlay.this);
                         nextLevel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
                         add(nextLevel);
@@ -459,6 +467,10 @@ public class GamePlay extends JPanel implements Runnable {
 
     public boolean isProtected() {
         return protectTime > 0;
+    }
+
+    public boolean isFinished() {
+        return level >= MAX_LEVEL;
     }
 
     @Override
