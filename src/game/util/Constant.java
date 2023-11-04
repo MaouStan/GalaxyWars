@@ -87,6 +87,8 @@ public class Constant {
     public static Clip WINNER_SOUND;
     public static Clip FREEZE_SOUND;
 
+    public static Clip Endcredit;
+
     // Cursor
     private final static String CURSOR_PATH = "res/images/crosshair.png";
     public static Cursor CUSTOM_CURSOR;
@@ -116,9 +118,10 @@ public class Constant {
             ITEM_COLLECT = SoundManager.getClip("res/sounds/pickup2.wav");
             FREEZE_SOUND = SoundManager.getClip("res/sounds/freeze.wav");
 
-            DEAD_SOUND = SoundManager.getClip("res/sounds/gameOver.wav");
-            LEVEL_UP = SoundManager.getClip("res/sounds/levelUp.wav");
+            DEAD_SOUND = SoundManager.getClip("res/sounds/GameOver2.wav");
+            LEVEL_UP = SoundManager.getClip("res/sounds/Next_level.wav");
             WINNER_SOUND = SoundManager.getClip("res/sounds/winner.wav");
+            Endcredit = SoundManager.getClip("res/sounds/Endcredit.wav");
 
             SOUND_ON = ImageManager.resizeImage("res/images/sound_on.png", 50, 50);
             SOUND_OFF = ImageManager.resizeImage("res/images/sound_off.png", 50, 50);
