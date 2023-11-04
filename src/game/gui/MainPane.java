@@ -86,33 +86,33 @@ public class MainPane extends JPanel {
         background.add(startBtn);
 
         // gameRule
-        OutlineLabel gameRuleBtn = new OutlineLabel("GameRule Setting", 2);
-        gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
-        gameRuleBtn.setForeground(Color.WHITE);
-        gameRuleBtn.setBounds(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2, 400, 70);
-        gameRuleBtn.setHorizontalAlignment(JLabel.CENTER);
-        gameRuleBtn.setVerticalAlignment(JLabel.CENTER);
-        gameRuleBtn.setOutlineColor(Color.BLACK);
-        gameRuleBtn.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent evt) {
-                gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 35));
-            }
+        // OutlineLabel gameRuleBtn = new OutlineLabel("GameRule Setting", 2);
+        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
+        // gameRuleBtn.setForeground(Color.WHITE);
+        // gameRuleBtn.setBounds(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2, 400, 70);
+        // gameRuleBtn.setHorizontalAlignment(JLabel.CENTER);
+        // gameRuleBtn.setVerticalAlignment(JLabel.CENTER);
+        // gameRuleBtn.setOutlineColor(Color.BLACK);
+        // gameRuleBtn.addMouseListener(new MouseAdapter() {
+        // public void mouseEntered(MouseEvent evt) {
+        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 35));
+        // }
 
-            public void mouseExited(MouseEvent evt) {
-                gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
-            }
+        // public void mouseExited(MouseEvent evt) {
+        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
+        // }
 
-            public void mouseClicked(MouseEvent evt) {
-                Frame.getInstance().changePanel(new GameRulePane());
-            }
-        });
-        background.add(gameRuleBtn);
+        // public void mouseClicked(MouseEvent evt) {
+        // Frame.getInstance().changePanel(new GameRulePane());
+        // }
+        // });
+        // background.add(gameRuleBtn);
 
         // setting
         OutlineLabel settingBtn = new OutlineLabel("Setting", 2);
         settingBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
         settingBtn.setForeground(Color.WHITE);
-        settingBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 70, 200, 70);
+        settingBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2, 200, 70);
         settingBtn.setHorizontalAlignment(JLabel.CENTER);
         settingBtn.setVerticalAlignment(JLabel.CENTER);
         settingBtn.setOutlineColor(Color.BLACK);
@@ -135,7 +135,7 @@ public class MainPane extends JPanel {
         OutlineLabel quitBtn = new OutlineLabel("QUIT", 2);
         quitBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
         quitBtn.setForeground(Color.WHITE);
-        quitBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 140, 200, 70);
+        quitBtn.setBounds(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 60, 200, 70);
         quitBtn.setHorizontalAlignment(JLabel.CENTER);
         quitBtn.setVerticalAlignment(JLabel.CENTER);
         quitBtn.setOutlineColor(Color.BLACK);

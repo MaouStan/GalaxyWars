@@ -67,7 +67,7 @@ public class NextLevel extends JPanel {
                 if (progress < 0.25) {
                     // First phase: spaceX move to 'N' in 1.5 seconds
                     // Calculate the intermediate position for 'N' based on progress
-                    spaceX = (int) (nPos * (4 * progress));
+                    spaceX = (int) (nPos * (8 * progress));
                 } else if (progress < 0.75) {
                     // Second phase: spaceX move slowly to 'L' in 3 seconds with easing
                     double phaseProgress = (progress - 0.25) / 0.5; // Normalize the progress to [0, 1]
@@ -77,7 +77,7 @@ public class NextLevel extends JPanel {
                 } else {
                     // Third phase: spaceX move to end in 3 seconds
                     // Calculate the intermediate position for the end based on progress
-                    spaceX = (int) (lPos + (getWidth() - lPos) * (4 * (progress - 0.75)));
+                    spaceX = (int) (lPos + (getWidth() - lPos) * (8 * (progress - 0.75)));
                 }
 
                 if (progress >= 1.0) {

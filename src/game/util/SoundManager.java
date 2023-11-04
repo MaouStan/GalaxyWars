@@ -43,6 +43,10 @@ public class SoundManager {
         SoundManager.volume = volume;
     }
 
+    public static float getVolumeNumber() {
+        return SoundManager.volume;
+    }
+
     public static Clip getClip(String filename) {
         Clip clip = null;
         try {
