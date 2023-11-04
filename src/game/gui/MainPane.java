@@ -46,7 +46,7 @@ public class MainPane extends JPanel {
         background.add(soundButton);
 
         // Title OutlineLabel
-        OutlineLabel title = new OutlineLabel("Galaxy War", 5);
+        OutlineLabel title = new OutlineLabel("Galaxy Wars", 5);
         title.setFont(fSemiBold.deriveFont(Font.BOLD, 100));
         title.setForeground(Color.WHITE);
         title.setBounds(0, 50, SCREEN_WIDTH, 120);
@@ -126,7 +126,7 @@ public class MainPane extends JPanel {
             }
 
             public void mouseClicked(MouseEvent evt) {
-                Frame.getInstance().changePanel(new SettingPane());
+                Frame.getInstance().changePanel(new Setting());
             }
         });
         background.add(settingBtn);

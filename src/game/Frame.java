@@ -6,6 +6,8 @@ import game.util.SoundManager;
 
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
@@ -16,7 +18,7 @@ public class Frame extends JFrame {
     public SoundManager sound;
 
     public Frame() {
-        super("Galaxy War");
+        super("Galaxy Wars");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setResizable(false);
@@ -43,6 +45,7 @@ public class Frame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        requestFocus();
     }
 
     public void clearEvent() {
@@ -60,6 +63,14 @@ public class Frame extends JFrame {
         for (MouseMotionListener m : mouse2) {
             removeMouseMotionListener(m);
         }
+
+        // add focus MouseListening
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                requestFocus();
+            }
+        });
     }
 
     public class getInstance {

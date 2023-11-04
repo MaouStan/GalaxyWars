@@ -99,7 +99,14 @@ public class PausePanel extends JPanel {
                 } else {
                     soundButton.setIcon(new ImageIcon(SOUND_ON));
                     sound_state = true;
-                    Frame.getInstance().sound.play(true);
+                    if (sound_state) {
+                        // remove sound frame
+                        Frame.getInstance().sound.stop();
+
+                        // new sound
+                        Frame.getInstance().sound = new SoundManager(bgm2);
+                        Frame.getInstance().sound.play(true);
+                    }
                 }
             }
         });

@@ -58,6 +58,11 @@ public class NextLevel extends JPanel {
                 double progress = (double) elapsedTime / 6000.0;
 
                 Graphics g = getGraphics();
+
+                if (g == null) {
+                    return;
+                }
+
                 g.setFont(fSemiBold.deriveFont(Font.BOLD, 40f));
                 FontMetrics fm = g.getFontMetrics();
                 int stringWidth = fm.stringWidth("Next Level");

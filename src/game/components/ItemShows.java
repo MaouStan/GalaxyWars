@@ -2,7 +2,7 @@ package game.components;
 
 import javax.swing.JPanel;
 
-import game.item.ItemType;
+import game.interfaces.ItemType;
 
 import javax.swing.JLabel;
 

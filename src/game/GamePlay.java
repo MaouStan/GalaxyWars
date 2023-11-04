@@ -12,9 +12,11 @@ import game.gui.EndGame;
 import game.gui.GameOverPanel;
 import game.gui.NextLevel;
 import game.gui.PausePanel;
+import game.interfaces.Difficulty;
+import game.interfaces.ItemType;
 import game.util.SoundManager;
 import game.item.Item;
-import game.item.ItemType;
+
 import java.awt.*;
 import static game.util.Constant.*;
 import java.lang.Runnable;
@@ -38,6 +40,8 @@ public class GamePlay extends JPanel implements Runnable {
     private Timer timer;
     private boolean inTimer = false;
     private boolean hold = false;
+    private int killed;
+    private boolean inEndgame;
 
     // ITEM
     private int automaticTime;
@@ -89,8 +93,11 @@ public class GamePlay extends JPanel implements Runnable {
         removeAll();
         repaint();
 
+        Difficulty.setDifficulty(DifficultyStr);
+
         gameOver = false;
         isPause = false;
+        inEndgame = false;
 
         freezeTime = 0;
         protectTime = 0;
@@ -103,6 +110,7 @@ public class GamePlay extends JPanel implements Runnable {
         seconds = -3;
 
         score = 0;
+        killed = 0;
 
         level = 0;
         health = MAX_HEALTH;
@@ -243,6 +251,7 @@ public class GamePlay extends JPanel implements Runnable {
             for (int j = 0; j < bullets.size(); j++) {
                 Bullet bullet = bullets.get(j);
                 if (bullet.intersect(meteor)) {
+                    killed++;
                     int spawnX = meteor.getX();
                     int spawnY = meteor.getY();
                     spawnItem(spawnX, spawnY);
@@ -289,7 +298,16 @@ public class GamePlay extends JPanel implements Runnable {
                     @Override
                     public void run() {
 
+                        if (isPause || gameOver) {
+                            return;
+                        }
+
                         if (isFinished()) {
+                            inEndgame = true;
+                            removeAll();
+                            Frame.getInstance().removeKeyListener(keyHandler);
+                            Frame.getInstance().removeMouseListener(mouseHandler);
+                            Frame.getInstance().removeMouseMotionListener(mouseHandler);
                             Frame.getInstance().changePanel(new EndGame(GamePlay.this));
                             timer.cancel();
                             return;
@@ -470,7 +488,23 @@ public class GamePlay extends JPanel implements Runnable {
     }
 
     public boolean isFinished() {
+        if (isPause || gameOver) {
+            return false;
+        }
         return level >= MAX_LEVEL;
+    }
+
+    public String getTime() {
+        return String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
+    }
+
+    public String getScore() {
+        return String.format("%,d", score);
+
+    }
+
+    public String getKilled() {
+        return String.format("%,d", killed);
     }
 
     @Override
@@ -603,7 +637,7 @@ public class GamePlay extends JPanel implements Runnable {
         double ns = 1_000_000_000 / FRAME_RATE;
 
         // Game loop
-        while (!gameOver) {
+        while (!gameOver && !inEndgame) {
             // Repaint the game
             repaint();
 
@@ -653,7 +687,9 @@ public class GamePlay extends JPanel implements Runnable {
             }
         }
         // gameOverPanel
-        gameOver();
+        if (gameOver) {
+            gameOver();
+        }
     }
 
     public void setHold(boolean b) {

@@ -13,7 +13,8 @@ public class Constant {
     public static final int FRAME_RATE = 60;
     public static final long ENEMY_SPAWN_DELAY = 2500;
     public static boolean sound_state = true;
-    public static int MAX_LEVEL = 1;
+    public static int MAX_LEVEL = 0;
+    public static String DifficultyStr = "normal";
 
     public static String[] planets = FileManager.getFiles("res/images/planets/");
 

@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import game.GamePlay;
 import game.entity.Entity;
+import game.interfaces.ItemType;
 
 public class Item extends Entity {
     private ItemType item;
