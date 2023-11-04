@@ -31,7 +31,7 @@ public class Constant {
     public static int METEOR_MAX_SIZE = 200;
     public static int METEOR_SPEED = 1;
     public static final int MAX_COUNT_METEOR = 99;
-    public static int METEOR_PER_LEVEL = 20;
+    public static int METEOR_PER_LEVEL = 1;
 
     // ========== PLAYER ========== \\
     public static String PLAYER_IMG = "res/images/player2.png";
@@ -44,9 +44,9 @@ public class Constant {
     // ========== ITEM ========== \\
     public static int ITEM_SIZE = 50;
     public static int ITEM_SPEED = 10;
-    public static int DROP_RATE = 5;
+    public static int DROP_RATE = 3;
     public static final int FREEZE_TIME = 3_000;
-    public static final int AUTOMATIC_TIME = 10_000;
+    public static final int AUTOMATIC_TIME = 3_000;
     public static final int PROTECT_TIME = 3_000;
 
     // ========== ASSETS ========== \\
