@@ -18,7 +18,7 @@ public class PausePanel extends JPanel {
     public PausePanel(GamePlay gp) {
         super();
         this.gp = gp;
-        int width = gp.getWidth(), height = gp.getHeight();
+        int width = SCREEN_WIDTH, height = SCREEN_HEIGHT;
         setLayout(null);
         setBounds(0, 0, width, height);
         setOpaque(false);
