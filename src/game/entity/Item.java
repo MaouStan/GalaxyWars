@@ -1,4 +1,4 @@
-package game.item;
+package game.entity;
 
 import static game.util.Constant.*;
 
@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import game.GamePlay;
-import game.entity.Entity;
 import game.interfaces.ItemType;
 
 public class Item extends Entity {

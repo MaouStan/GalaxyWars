@@ -33,11 +33,11 @@ public class MainPane extends JPanel {
                 if (sound_state) {
                     soundButton.setIcon(new ImageIcon(SOUND_OFF));
                     sound_state = false;
-                    Frame.getInstance().sound.stop();
+                    Frame.getInstance().sound.stop(); // หยุดเพลง
                 } else {
                     soundButton.setIcon(new ImageIcon(SOUND_ON));
                     sound_state = true;
-                    Frame.getInstance().sound.play(true);
+                    Frame.getInstance().sound.play(true); // เล่นเพลง
                 }
             }
         });
@@ -84,29 +84,6 @@ public class MainPane extends JPanel {
             }
         });
         background.add(startBtn);
-
-        // gameRule
-        // OutlineLabel gameRuleBtn = new OutlineLabel("GameRule Setting", 2);
-        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
-        // gameRuleBtn.setForeground(Color.WHITE);
-        // gameRuleBtn.setBounds(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2, 400, 70);
-        // gameRuleBtn.setHorizontalAlignment(JLabel.CENTER);
-        // gameRuleBtn.setVerticalAlignment(JLabel.CENTER);
-        // gameRuleBtn.setOutlineColor(Color.BLACK);
-        // gameRuleBtn.addMouseListener(new MouseAdapter() {
-        // public void mouseEntered(MouseEvent evt) {
-        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 35));
-        // }
-
-        // public void mouseExited(MouseEvent evt) {
-        // gameRuleBtn.setFont(fRegular.deriveFont(Font.BOLD, 30));
-        // }
-
-        // public void mouseClicked(MouseEvent evt) {
-        // Frame.getInstance().changePanel(new GameRulePane());
-        // }
-        // });
-        // background.add(gameRuleBtn);
 
         // setting
         OutlineLabel settingBtn = new OutlineLabel("Setting", 2);

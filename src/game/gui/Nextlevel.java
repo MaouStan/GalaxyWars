@@ -50,6 +50,7 @@ public class NextLevel extends JPanel {
         delayTimer.setRepeats(false); // Make the timer only fire once
         delayTimer.start();
 
+        // timer animation of space
         timer = new Timer(1000 / 60, new ActionListener() {
             // Inside the actionPerformed method of the 'timer':
             @Override

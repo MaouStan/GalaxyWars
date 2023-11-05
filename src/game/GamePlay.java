@@ -5,6 +5,7 @@ import javax.swing.*;
 import game.controller.KeyHandler;
 import game.controller.MouseHandler;
 import game.entity.Bullet;
+import game.entity.Item;
 import game.entity.Meteor;
 import game.entity.Planet;
 import game.entity.Player;
@@ -15,7 +16,6 @@ import game.gui.PausePanel;
 import game.interfaces.Difficulty;
 import game.interfaces.ItemType;
 import game.util.SoundManager;
-import game.item.Item;
 
 import java.awt.*;
 import static game.util.Constant.*;

@@ -72,9 +72,4 @@ public class Frame extends JFrame {
             }
         });
     }
-
-    public class getInstance {
-
-        public SoundManager sound;
-    }
 }

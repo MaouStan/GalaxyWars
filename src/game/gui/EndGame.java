@@ -7,8 +7,6 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.util.TimerTask;
@@ -31,7 +29,6 @@ public class EndGame extends JPanel {
 
         private int imageX; // ตำแหน่งในแกน X ของรูปภาพ
         private int imageY; // ตำแหน่งในแกน Y ของรูปภาพ
-        private int textX; // ตำแหน่งในแกน X ของข้อความ
         private int textY; // ตำแหน่งในแกน Y ของข้อความ
 
         private Timer timer;
@@ -48,7 +45,8 @@ public class EndGame extends JPanel {
 
                 // เล่นเพลง
                 Clip endGameSong = SoundManager.getClip("res/sounds/Endcredit.wav");
-                Frame.getInstance().sound.play(endGameSong);
+                Frame.getInstance().sound.setSound(endGameSong);
+                Frame.getInstance().sound.play(true);
 
                 image1 = ImageManager.load("res/images/nextlevelxx.Wpng.png");
                 Iconwin = ImageManager.resizeImage("res/images/iconwin.png", 450, 450);
@@ -59,7 +57,6 @@ public class EndGame extends JPanel {
                 // ตำแหน่งเริ่มต้นของรูปภาพและข้อความ
                 imageX = PANEL_WIDTH / 2 - image1.getWidth() / 2;
                 imageY = PANEL_HEIGHT;
-                textX = PANEL_WIDTH / 2;
                 textY = PANEL_HEIGHT + 1500;
 
                 timer = new Timer();
@@ -68,10 +65,10 @@ public class EndGame extends JPanel {
                         public void run() {
                                 // เลื่อนรูปภาพและข้อความขึ้นไป
                                 if (imageY > PANEL_HEIGHT / 2 - 420) {
-                                        imageY -= 2;
+                                        imageY -= 1;
                                 }
                                 if (textY > PANEL_HEIGHT / 2 - 120) {
-                                        textY -= 2;
+                                        textY -= 1;
                                 }
 
                                 if (textY <= 420) {
@@ -85,6 +82,7 @@ public class EndGame extends JPanel {
                                         backButton.addMouseListener(new MouseAdapter() {
                                                 @Override
                                                 public void mouseClicked(MouseEvent evt) {
+                                                        Frame.getInstance().sound.stop();
                                                         Frame.getInstance().clearEvent();
                                                         Frame.getInstance().changePanel(new MainPane());
                                                 }

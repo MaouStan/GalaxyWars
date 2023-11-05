@@ -44,7 +44,7 @@ public class PausePanel extends JPanel {
         continueBtn.setOpaque(false);
         continueBtn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                gp.togglePause();
+                gp.togglePause(); // เล่นเกมต่อ
             }
 
             public void mouseEntered(MouseEvent evt) {
@@ -116,6 +116,7 @@ public class PausePanel extends JPanel {
     }
 
     protected void paintComponent(Graphics g) {
+        // bg ทึบ
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);

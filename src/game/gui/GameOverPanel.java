@@ -21,7 +21,7 @@ public class GameOverPanel extends JPanel {
         int width = gp.getWidth(), height = gp.getHeight();
         setLayout(null);
         setBounds(0, 0, width, height);
-        setOpaque(false);
+        setOpaque(false); // transparent
         setBackground(new Color(0, 0, 0, 125));
 
         OutlineLabel lblGameOver = new OutlineLabel("Game Over", 2);
@@ -72,21 +72,22 @@ public class GameOverPanel extends JPanel {
                     Frame.getInstance().sound = new SoundManager(bgm1);
                     Frame.getInstance().sound.play(true);
                 }
-                Frame.getInstance().changePanel(new MainPane());
+                Frame.getInstance().changePanel(new MainPane()); // กลับไปหน้า main
             }
 
             public void mouseEntered(MouseEvent evt) {
-                backToMenuBtn.setForeground(Color.yellow);
+                backToMenuBtn.setForeground(Color.yellow); // เมาส์อยู่บน
             }
 
             public void mouseExited(MouseEvent evt) {
-                backToMenuBtn.setForeground(Color.white);
+                backToMenuBtn.setForeground(Color.white); // เมาส์อยู่นอก
             }
         });
         add(backToMenuBtn);
     }
 
     protected void paintComponent(Graphics g) {
+        // พื้นหลังทึบ
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
