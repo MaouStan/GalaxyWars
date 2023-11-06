@@ -32,7 +32,7 @@ public class GamePlay extends JPanel implements Runnable {
     private int seconds;
     private int score;
     private int level;
-    private int spawnedMeteor;
+    private int spawnedMeteor; //
     private int amountMeteorEnough;
     private int maxMeteorLevel;
     private long lastTimeMeteorSpawn;
@@ -190,7 +190,6 @@ public class GamePlay extends JPanel implements Runnable {
     }
 
     public void restart() {
-
         stop();
         start();
     }
@@ -330,6 +329,8 @@ public class GamePlay extends JPanel implements Runnable {
 
                         remove(nextLevel);
 
+                        // health = MAX_HEALTH;
+
                         // delay 1 sec
                         try {
                             Thread.sleep(1000);
@@ -394,7 +395,6 @@ public class GamePlay extends JPanel implements Runnable {
                 freezeTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-
                         if (inTimer || isPause) {
                             return;
                         }
@@ -465,7 +465,11 @@ public class GamePlay extends JPanel implements Runnable {
                 break;
 
             case HEART:
-                health = Math.min(MAX_HEALTH, health + item.getEffectTime());
+                if (health + item.getEffectTime() > MAX_HEALTH) {
+                    health = MAX_HEALTH;
+                } else {
+                    health += item.getEffectTime();
+                }
                 break;
             default:
                 break;
@@ -666,7 +670,6 @@ public class GamePlay extends JPanel implements Runnable {
                         seconds++;
                         oldSecondTime = currentTimeSecond;
                     }
-
                 } else {
                     // add pause panel
                     pausePanel = new PausePanel(this);
@@ -686,6 +689,7 @@ public class GamePlay extends JPanel implements Runnable {
                 delta--;
             }
         }
+
         // gameOverPanel
         if (gameOver) {
             gameOver();
