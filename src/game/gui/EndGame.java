@@ -2,6 +2,7 @@ package game.gui;
 
 import static game.util.Constant.BG2;
 import static game.util.Constant.fBold;
+import static game.util.Constant.sound_state;
 
 import javax.sound.sampled.Clip;
 import javax.swing.*;
@@ -16,6 +17,8 @@ import game.GamePlay;
 import game.Frame;
 import game.util.ImageManager;
 import game.util.SoundManager;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class EndGame extends JPanel {
 
@@ -44,6 +47,9 @@ public class EndGame extends JPanel {
                 setBackground(new Color(0, 0, 0, 125));
 
                 // เล่นเพลง
+                if (sound_state) {
+                        Frame.getInstance().sound.stop();
+                }
                 Clip endGameSong = SoundManager.getClip("res/sounds/Endcredit.wav");
                 Frame.getInstance().sound.setSound(endGameSong);
                 Frame.getInstance().sound.play(true);
@@ -80,7 +86,7 @@ public class EndGame extends JPanel {
                                                                         180)));
                                         backButton.setBounds(5, textY + 280, 300, 300);
                                         backButton.addMouseListener(new MouseAdapter() {
-                                                @Override
+
                                                 public void mouseClicked(MouseEvent evt) {
                                                         Frame.getInstance().sound.stop();
                                                         Frame.getInstance().clearEvent();
@@ -90,6 +96,21 @@ public class EndGame extends JPanel {
                                         backButton.setVerticalAlignment(JLabel.CENTER);
                                         backButton.setHorizontalAlignment(JLabel.CENTER);
                                         add(backButton);
+
+                                        // Add key listening esc to goto main
+                                        Frame.getInstance().addKeyListener(new KeyAdapter() {
+                                                @Override
+                                                public void keyPressed(KeyEvent e) {
+                                                        // If the escape key is pressed, clear the event and change the
+                                                        // panel to the
+                                                        // main panel
+                                                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                                                Frame.getInstance().sound.stop();
+                                                                Frame.getInstance().clearEvent();
+                                                                Frame.getInstance().changePanel(new MainPane());
+                                                        }
+                                                }
+                                        });
 
                                         timer.cancel();
                                 }
@@ -123,13 +144,13 @@ public class EndGame extends JPanel {
                 g.setFont(fBold.deriveFont(Font.BOLD, 42f));
 
                 int stringWidth = g.getFontMetrics().stringWidth("Score : " + gp.getScore());
-                g.drawString("Score : " + gp.getScore(), PANEL_WIDTH / 2 - stringWidth / 2 - 500, textY - 730);
+                g.drawString("    Score : " + gp.getScore(), PANEL_WIDTH / 2 - stringWidth / 2 - 500, textY - 730);
 
                 stringWidth = g.getFontMetrics().stringWidth("Time : " + gp.getTime());
-                g.drawString("Time : " + gp.getTime(), PANEL_WIDTH / 2 - stringWidth / 2 - 30, textY - 730);
+                g.drawString("    Time : " + gp.getTime(), PANEL_WIDTH / 2 - stringWidth / 2 - 30, textY - 730);
 
                 stringWidth = g.getFontMetrics().stringWidth("Kill : " + gp.getKilled());
-                g.drawString("Kill : " + gp.getKilled(), PANEL_WIDTH / 2 - stringWidth / 2 + 450, textY - 730);
+                g.drawString("  Kill : " + gp.getKilled(), PANEL_WIDTH / 2 - stringWidth / 2 + 450, textY - 730);
 
                 g.setFont(fBold.deriveFont(Font.BOLD, 98f)); // ปรับให้เป็นตามขนาดจอด้วย
                 g.drawString("Galaxy Wars", PANEL_WIDTH / 2 - g.getFontMetrics().stringWidth("Galaxy Wars") / 2,
