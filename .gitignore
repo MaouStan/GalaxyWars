@@ -1,8 +1,8 @@
-**/**.class
+# Compiled class file
 *.class
-*.class
-bin/**.class
-bin/**.class
-*.class
-game.jar
-/bin
+
+# IDE-specific files
+.vscode/
+
+# Build directories
+bin/
