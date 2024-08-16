@@ -1,6 +1,7 @@
 # Galaxy Wars
 
 Galaxy Wars is a space-themed shooting game developed as a learning project for an Object-Oriented Programming (OOP) class. The game's concept revolves around protecting our world by shooting meteors.
+![alt text](res/images/banner/banner.png)
 
 ## Game Concept
 
@@ -45,9 +46,20 @@ The project is organized into several packages:
 ## How to Run
 
 1. Ensure you have Java Development Kit (JDK) installed on your system.
-2. Navigate to the project's root directory.
-3. Compile the project using your preferred Java compiler or IDE.
-4. Run the `src/Main.java` file to start the game.
+2. Open a terminal or command prompt.
+3. Navigate to the project's `/src` directory.
+4. Compile the project using the following command:
+   ```
+   javac -d ../bin Main.java game/*.java game/controller/*.java game/entity/*.java game/gui/*.java game/interfaces/*.java game/util/*.java
+   ```
+5. After successful compilation, navigate to the parent directory:
+   ```
+   cd ..
+   ```
+6. Run the main file using the following command:
+   ```
+   java -cp bin Main
+   ```
 
 ## Controls
 

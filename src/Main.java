@@ -8,7 +8,6 @@ import game.gui.MainPane;
 import game.util.SoundManager;
 
 public class Main {
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Frame window = new Frame();
